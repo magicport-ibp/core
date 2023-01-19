@@ -51,7 +51,13 @@ abstract class Repository extends PrettusRepository implements PrettusCacheable
 
     private function getModelNamespace(array|string $modelName): string
     {
-        return 'App\\Containers\\' . $this->getCurrentSection() . '\\' . $this->getCurrentContainer() . '\\Models\\' . $modelName;
+
+        return 'App\\' . $this->getFolderName() .'\\' . $this->getCurrentSection() . '\\' . $this->getCurrentContainer() . '\\Models\\' . $modelName;
+    }
+
+    private function getFolderName(): string
+    {
+        return explode('\\', static::class)[1];
     }
 
     private function getCurrentSection(): string

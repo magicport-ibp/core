@@ -12,6 +12,7 @@ class Apiato
     public const VERSION = '11.0.0';
 
     private const SHIP_NAME = 'ship';
+    private const SKELETON_DIRECTORY_NAME = 'Skeleton';
     private const CONTAINERS_DIRECTORY_NAME = 'Containers';
 
     public function getShipFoldersNames(): array
@@ -36,6 +37,9 @@ class Apiato
         foreach (File::directories($this->getSectionPath($sectionName)) as $key => $name) {
             $containerNames[] = basename($name);
         }
+        foreach (File::directories($this->getSkelotonPath($sectionName)) as $key => $name) {
+            $containerNames[] = basename($name);
+        }
 
         return $containerNames;
     }
@@ -44,6 +48,12 @@ class Apiato
     {
         return app_path(self::CONTAINERS_DIRECTORY_NAME . DIRECTORY_SEPARATOR . $sectionName);
     }
+
+    private function getSkelotonPath(string $sectionName): string
+    {
+        return app_path(self::SKELETON_DIRECTORY_NAME . DIRECTORY_SEPARATOR . $sectionName);
+    }
+
 
     /**
      * Build and return an object of a class from its file path
@@ -168,16 +178,13 @@ class Apiato
 
     public function getAllContainerPaths(): array
     {
-        $sectionNames = $this->getSectionNames();
-        $containerPaths = [];
-        foreach ($sectionNames as $name) {
-            $sectionContainerPaths = $this->getSectionContainerPaths($name);
-            foreach ($sectionContainerPaths as $containerPath) {
-                $containerPaths[] = $containerPath;
-            }
-        }
+        
+        return [
+            ...File::directories(File::directories(app_path(self::SKELETON_DIRECTORY_NAME))),
+            ...File::directories(File::directories(app_path(self::CONTAINERS_DIRECTORY_NAME))),
+        ];
 
-        return $containerPaths;
+        
     }
 
     public function getSectionNames(): array
@@ -193,11 +200,16 @@ class Apiato
 
     public function getSectionPaths(): array
     {
-        return File::directories(app_path(self::CONTAINERS_DIRECTORY_NAME));
+        return [
+            ...File::directories(app_path(self::CONTAINERS_DIRECTORY_NAME)),
+            ...File::directories(app_path(self::SKELETON_DIRECTORY_NAME)),
+            ];
     }
 
     public function getSectionContainerPaths(string $sectionName): array
     {
+
         return File::directories(app_path(self::CONTAINERS_DIRECTORY_NAME . DIRECTORY_SEPARATOR . $sectionName));
+
     }
 }

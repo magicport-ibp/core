@@ -22,12 +22,15 @@ class ApiatoServiceProvider extends AbstractMainServiceProvider
         // by the auto-loading scripts, before the $aliases property is executed.
         $this->app->alias(Apiato::class, 'Apiato');
 
+        
+
+
         // parent::register() should be called AFTER we bind 'Apiato'
         parent::register();
 
         $this->runLoaderRegister();
     }
-    
+
     public function boot(): void
     {
         parent::boot();

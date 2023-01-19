@@ -22,6 +22,7 @@ trait RoutesLoaderTrait
         $containersPaths = Apiato::getAllContainerPaths();
         //test
         foreach ($containersPaths as $containerPath) {
+            
             $this->loadApiContainerRoutes($containerPath);
             $this->loadWebContainerRoutes($containerPath);
         }
@@ -33,12 +34,16 @@ trait RoutesLoaderTrait
      */
     private function loadApiContainerRoutes(string $containerPath): void
     {
+
+        //"/home/akif/PhpstormProjects/MagicPortApi Projects/magicport-skeleton-try-better/app/Skeleton/AppSection/Welcome/UI/API/Routes" // vendor/magicport/core/Loaders/RoutesLoaderTrait.php:40
+        //"/home/akif/PhpstormProjects/MagicPortApi Projects/magicport-skeleton-try-better/app/Skeleton/Customer/Certificates/UI/API/Routes" // vendor/magicport/core/Loaders/RoutesLoaderTrait.php:40
+
         // Build the container api routes path
         $apiRoutesPath = $containerPath . '/UI/API/Routes';
         // Build the namespace from the path
         $controllerNamespace = $containerPath . '\\UI\API\Controllers';
-
         if (File::isDirectory($apiRoutesPath)) {
+
             $files = File::allFiles($apiRoutesPath);
             $files = Arr::sort($files, function ($file) {
                 return $file->getFilename();
@@ -55,10 +60,13 @@ trait RoutesLoaderTrait
      */
     private function loadApiRoute($file, $controllerNamespace): void
     {
+
         $routeGroupArray = $this->getRouteGroup($file, $controllerNamespace);
 
         Route::group($routeGroupArray, function ($router) use ($file) {
+
             require $file->getPathname();
+
         });
     }
 
