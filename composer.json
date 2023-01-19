@@ -1,5 +1,5 @@
 {
-    "name": "apiato/core",
+    "name": "magicport/core",
     "description": "Core package for Apiato.",
     "keywords": [
         "apiato",
@@ -37,6 +37,9 @@
         "mockery/mockery": "^1.4.4",
         "friendsofphp/php-cs-fixer": "^3.8.0",
         "vimeo/psalm": "^4.22.0"
+    },
+    "replace": {
+        "apiato/core": "self.version"
     },
     "autoload": {
         "psr-4": {

@@ -20,7 +20,7 @@ trait RoutesLoaderTrait
     public function runRoutesAutoLoader(): void
     {
         $containersPaths = Apiato::getAllContainerPaths();
-
+        //test
         foreach ($containersPaths as $containerPath) {
             $this->loadApiContainerRoutes($containerPath);
             $this->loadWebContainerRoutes($containerPath);
