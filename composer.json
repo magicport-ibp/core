@@ -39,7 +39,7 @@
         "vimeo/psalm": "^4.22.0"
     },
     "replace": {
-        "apiato/core": "self.version"
+        "apiato/core": "^v7.0.0"
     },
     "autoload": {
         "psr-4": {
