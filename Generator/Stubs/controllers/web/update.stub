@@ -6,7 +6,7 @@ use App\Containers\{{section-name}}\{{container-name}}\Actions\Find{{model}}ById
 use App\Containers\{{section-name}}\{{container-name}}\Actions\Update{{model}}Action;
 use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Edit{{model}}Request;
 use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Update{{model}}Request;
-use App\Ship\Parents\Controllers\WebController;
+use App\MagicPort\Ship\Parents\Controllers\WebController;
 
 class {{class-name}} extends WebController
 {

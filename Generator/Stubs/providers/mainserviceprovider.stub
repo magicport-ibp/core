@@ -2,7 +2,7 @@
 
 namespace App\Containers\{{section-name}}\{{container-name}}\Providers;
 
-use App\Ship\Parents\Providers\MainServiceProvider as ParentMainServiceProvider;
+use App\MagicPort\Ship\Parents\Providers\MainServiceProvider as ParentMainServiceProvider;
 
 /**
  * The Main Service Provider of this container, it will be automatically registered in the framework.

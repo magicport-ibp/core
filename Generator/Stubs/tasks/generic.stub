@@ -2,7 +2,7 @@
 
 namespace App\Containers\{{section-name}}\{{container-name}}\Tasks;
 
-use App\Ship\Parents\Tasks\Task as ParentTask;
+use App\MagicPort\Ship\Parents\Tasks\Task as ParentTask;
 
 class {{class-name}} extends ParentTask
 {

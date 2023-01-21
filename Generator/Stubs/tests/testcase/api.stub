@@ -2,7 +2,7 @@
 
 namespace App\Containers\{{section-name}}\{{container-name}}\UI\API\Tests;
 
-use App\Ship\Parents\Tests\PhpUnit\TestCase as ShipTestCase;
+use App\MagicPort\Ship\Parents\Tests\PhpUnit\TestCase as ShipTestCase;
 
 /**
  * Class {{class-name}}.

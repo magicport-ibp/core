@@ -5,7 +5,7 @@ namespace App\Containers\{{section-name}}\{{container-name}}\Tests\Unit;
 use App\Containers\{{section-name}}\{{container-name}}\Models\{{model}};
 use App\Containers\{{section-name}}\{{container-name}}\Tasks\Find{{model}}ByIdTask;
 use App\Containers\{{section-name}}\{{container-name}}\Tests\TestCase;
-use App\Ship\Exceptions\NotFoundException;
+use App\MagicPort\Ship\Exceptions\NotFoundException;
 
 /**
  * Class {{class-name}}.

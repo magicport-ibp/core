@@ -6,8 +6,8 @@ use Apiato\Core\Exceptions\IncorrectIdException;
 use App\Containers\{{section-name}}\{{container-name}}\Models\{{model}};
 use App\Containers\{{section-name}}\{{container-name}}\Tasks\Create{{model}}Task;
 use App\Containers\{{section-name}}\{{container-name}}\UI\{{ui}}\Requests\Create{{model}}Request;
-use App\Ship\Exceptions\CreateResourceFailedException;
-use App\Ship\Parents\Actions\Action as ParentAction;
+use App\MagicPort\Ship\Exceptions\CreateResourceFailedException;
+use App\MagicPort\Ship\Parents\Actions\Action as ParentAction;
 
 class {{class-name}} extends ParentAction
 {

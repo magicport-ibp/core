@@ -32,7 +32,7 @@ trait LocalizationLoaderTrait
 
     public function loadLocalsFromShip(): void
     {
-        $shipLocaleDirectory = base_path('app/Ship/Languages');
+        $shipLocaleDirectory = base_path('app/MagicPort/Ship/Languages');
         $this->loadLocals($shipLocaleDirectory, 'ship');
     }
 }

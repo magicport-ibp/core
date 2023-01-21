@@ -5,7 +5,7 @@ namespace App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface
 use App\Containers\{{section-name}}\{{container-name}}\Actions\Create{{model}}Action;
 use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Create{{model}}Request;
 use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Store{{model}}Request;
-use App\Ship\Parents\Controllers\WebController;
+use App\MagicPort\Ship\Parents\Controllers\WebController;
 
 class {{class-name}} extends WebController
 {

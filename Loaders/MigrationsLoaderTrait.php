@@ -21,7 +21,7 @@ trait MigrationsLoaderTrait
 
     public function loadMigrationsFromShip(): void
     {
-        $shipMigrationDirectory = base_path('app/Ship/Migrations');
+        $shipMigrationDirectory = base_path('app/MagicPort/Ship/Migrations');
         $this->loadMigrations($shipMigrationDirectory);
     }
 }

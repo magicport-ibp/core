@@ -7,9 +7,9 @@ use Apiato\Core\Exceptions\InvalidTransformerException;
 use App\Containers\{{section-name}}\{{container-name}}\Actions\Update{{model}}Action;
 use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Update{{model}}Request;
 use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Transformers\{{model}}Transformer;
-use App\Ship\Exceptions\NotFoundException;
-use App\Ship\Exceptions\UpdateResourceFailedException;
-use App\Ship\Parents\Controllers\{{base-controller}};
+use App\MagicPort\Ship\Exceptions\NotFoundException;
+use App\MagicPort\Ship\Exceptions\UpdateResourceFailedException;
+use App\MagicPort\Ship\Parents\Controllers\{{base-controller}};
 
 class {{class-name}} extends {{base-controller}}
 {

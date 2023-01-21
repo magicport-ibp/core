@@ -3,7 +3,7 @@
 namespace App\Containers\{{section-name}}\{{container-name}}\Mails;
 
 use App\Containers\AppSection\User\Models\User;
-use App\Ship\Parents\Mails\Mail as ParentMail;
+use App\MagicPort\Ship\Parents\Mails\Mail as ParentMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 

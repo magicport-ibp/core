@@ -29,7 +29,7 @@ trait HelpersLoaderTrait
 
     public function loadHelpersFromShip(): void
     {
-        $shipHelpersDirectory = base_path('app/Ship/Helpers');
+        $shipHelpersDirectory = base_path('app/MagicPort/Ship/Helpers');
         $this->loadHelpers($shipHelpersDirectory);
     }
 }

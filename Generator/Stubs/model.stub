@@ -2,7 +2,7 @@
 
 namespace App\Containers\{{section-name}}\{{container-name}}\Models;
 
-use App\Ship\Parents\Models\Model as ParentModel;
+use App\MagicPort\Ship\Parents\Models\Model as ParentModel;
 
 class {{class-name}} extends ParentModel
 {

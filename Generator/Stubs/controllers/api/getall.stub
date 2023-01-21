@@ -7,7 +7,7 @@ use Apiato\Core\Exceptions\InvalidTransformerException;
 use App\Containers\{{section-name}}\{{container-name}}\Actions\GetAll{{models}}Action;
 use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\GetAll{{models}}Request;
 use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Transformers\{{model}}Transformer;
-use App\Ship\Parents\Controllers\{{base-controller}};
+use App\MagicPort\Ship\Parents\Controllers\{{base-controller}};
 use Prettus\Repository\Exceptions\RepositoryException;
 
 class {{class-name}} extends {{base-controller}}

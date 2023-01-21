@@ -4,7 +4,7 @@ namespace App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface
 
 use App\Containers\{{section-name}}\{{container-name}}\Actions\Find{{model}}ByIdAction;
 use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Find{{model}}ByIdRequest;
-use App\Ship\Parents\Controllers\WebController;
+use App\MagicPort\Ship\Parents\Controllers\WebController;
 
 class {{class-name}} extends WebController
 {

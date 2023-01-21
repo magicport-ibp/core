@@ -2,7 +2,7 @@
 
 namespace App\Containers\{{section-name}}\{{container-name}}\Exceptions;
 
-use App\Ship\Parents\Exceptions\Exception as ParentException;
+use App\MagicPort\Ship\Parents\Exceptions\Exception as ParentException;
 use Symfony\Component\HttpFoundation\Response;
 
 class {{class-name}} extends ParentException

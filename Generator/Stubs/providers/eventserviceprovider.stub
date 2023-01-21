@@ -2,7 +2,7 @@
 
 namespace App\Containers\{{section-name}}\{{container-name}}\Providers;
 
-use App\Ship\Parents\Providers\EventServiceProvider as ParentEventServiceProvider;
+use App\MagicPort\Ship\Parents\Providers\EventServiceProvider as ParentEventServiceProvider;
 
 /**
  * The Main Service Provider of this container, it will be automatically registered in the framework.

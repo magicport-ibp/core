@@ -5,8 +5,8 @@ namespace App\Containers\{{section-name}}\{{container-name}}\Actions;
 use App\Containers\{{section-name}}\{{container-name}}\Models\{{model}};
 use App\Containers\{{section-name}}\{{container-name}}\Tasks\Find{{model}}ByIdTask;
 use App\Containers\{{section-name}}\{{container-name}}\UI\{{ui}}\Requests\Find{{model}}ByIdRequest;
-use App\Ship\Exceptions\NotFoundException;
-use App\Ship\Parents\Actions\Action as ParentAction;
+use App\MagicPort\Ship\Exceptions\NotFoundException;
+use App\MagicPort\Ship\Parents\Actions\Action as ParentAction;
 
 class {{class-name}} extends ParentAction
 {

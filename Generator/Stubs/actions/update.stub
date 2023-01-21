@@ -6,9 +6,9 @@ use Apiato\Core\Exceptions\IncorrectIdException;
 use App\Containers\{{section-name}}\{{container-name}}\Models\{{model}};
 use App\Containers\{{section-name}}\{{container-name}}\Tasks\Update{{model}}Task;
 use App\Containers\{{section-name}}\{{container-name}}\UI\{{ui}}\Requests\Update{{model}}Request;
-use App\Ship\Exceptions\NotFoundException;
-use App\Ship\Exceptions\UpdateResourceFailedException;
-use App\Ship\Parents\Actions\Action as ParentAction;
+use App\MagicPort\Ship\Exceptions\NotFoundException;
+use App\MagicPort\Ship\Exceptions\UpdateResourceFailedException;
+use App\MagicPort\Ship\Parents\Actions\Action as ParentAction;
 
 class {{class-name}} extends ParentAction
 {

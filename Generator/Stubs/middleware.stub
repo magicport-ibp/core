@@ -2,7 +2,7 @@
 
 namespace App\Containers\{{section-name}}\{{container-name}}\Middlewares;
 
-use App\Ship\Parents\Middlewares\Middleware as ParentMiddleware;
+use App\MagicPort\Ship\Parents\Middlewares\Middleware as ParentMiddleware;
 use Closure;
 use Illuminate\Http\Request;
 

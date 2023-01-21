@@ -4,9 +4,9 @@ namespace App\Containers\{{section-name}}\{{container-name}}\Tasks;
 
 use App\Containers\{{section-name}}\{{container-name}}\Data\Repositories\{{model}}Repository;
 use App\Containers\{{section-name}}\{{container-name}}\Events\{{event}};
-use App\Ship\Exceptions\DeleteResourceFailedException;
-use App\Ship\Exceptions\NotFoundException;
-use App\Ship\Parents\Tasks\Task as ParentTask;
+use App\MagicPort\Ship\Exceptions\DeleteResourceFailedException;
+use App\MagicPort\Ship\Exceptions\NotFoundException;
+use App\MagicPort\Ship\Parents\Tasks\Task as ParentTask;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

@@ -61,6 +61,6 @@ trait ProvidersLoaderTrait
 
     public function loadOnlyShipProviderFromShip(): void
     {
-        $this->loadProvider('App\Ship\Providers\ShipProvider');
+        $this->loadProvider('App\MagicPort\Ship\Providers\ShipProvider');
     }
 }

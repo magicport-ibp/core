@@ -2,7 +2,7 @@
 
 namespace App\Containers\{{section-name}}\{{container-name}}\Actions;
 
-use App\Ship\Parents\Actions\Action as ParentAction;
+use App\MagicPort\Ship\Parents\Actions\Action as ParentAction;
 
 class {{class-name}} extends ParentAction
 {

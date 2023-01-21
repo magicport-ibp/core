@@ -4,9 +4,9 @@ namespace App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface
 
 use App\Containers\{{section-name}}\{{container-name}}\Actions\Delete{{model}}Action;
 use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Delete{{model}}Request;
-use App\Ship\Exceptions\DeleteResourceFailedException;
-use App\Ship\Exceptions\NotFoundException;
-use App\Ship\Parents\Controllers\{{base-controller}};
+use App\MagicPort\Ship\Exceptions\DeleteResourceFailedException;
+use App\MagicPort\Ship\Exceptions\NotFoundException;
+use App\MagicPort\Ship\Parents\Controllers\{{base-controller}};
 use Illuminate\Http\JsonResponse;
 
 class {{class-name}} extends {{base-controller}}

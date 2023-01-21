@@ -2,7 +2,7 @@
 
 namespace App\Containers\{{section-name}}\{{container-name}}\Data\Repositories;
 
-use App\Ship\Parents\Repositories\Repository as ParentRepository;
+use App\MagicPort\Ship\Parents\Repositories\Repository as ParentRepository;
 
 class {{class-name}} extends ParentRepository
 {

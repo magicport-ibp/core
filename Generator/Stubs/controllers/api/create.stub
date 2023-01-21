@@ -7,8 +7,8 @@ use Apiato\Core\Exceptions\InvalidTransformerException;
 use App\Containers\{{section-name}}\{{container-name}}\Actions\Create{{model}}Action;
 use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Create{{model}}Request;
 use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Transformers\{{model}}Transformer;
-use App\Ship\Exceptions\CreateResourceFailedException;
-use App\Ship\Parents\Controllers\{{base-controller}};
+use App\MagicPort\Ship\Exceptions\CreateResourceFailedException;
+use App\MagicPort\Ship\Parents\Controllers\{{base-controller}};
 use Illuminate\Http\JsonResponse;
 
 class {{class-name}} extends {{base-controller}}

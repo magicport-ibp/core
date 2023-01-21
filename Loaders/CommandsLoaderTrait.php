@@ -37,7 +37,7 @@ trait CommandsLoaderTrait
 
     public function loadCommandsFromShip(): void
     {
-        $shipCommandsDirectory = base_path('app/Ship/Commands');
+        $shipCommandsDirectory = base_path('app/MagicPort/Ship/Commands');
         $this->loadTheConsoles($shipCommandsDirectory);
     }
 

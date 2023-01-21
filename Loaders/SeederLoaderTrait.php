@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\File;
 /**
  * This class is different from other loaders as it is not called by AutoLoaderTrait
  * It is called "database/seeders/DatabaseSeeder.php", Laravel main seeder and only load seeder from
- * Containers (not from "app/Ship/seeders").
+ * Containers (not from "app/MagicPort/Ship/seeders").
  */
 trait SeederLoaderTrait
 {

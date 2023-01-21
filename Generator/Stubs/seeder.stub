@@ -2,7 +2,7 @@
 
 namespace App\Containers\{{section-name}}\{{container-name}}\Data\Seeders;
 
-use App\Ship\Parents\Seeders\Seeder as ParentSeeder;
+use App\MagicPort\Ship\Parents\Seeders\Seeder as ParentSeeder;
 
 class {{class-name}} extends ParentSeeder
 {

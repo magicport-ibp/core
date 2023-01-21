@@ -11,9 +11,9 @@ class Apiato
      */
     public const VERSION = '11.0.0';
 
-    private const SHIP_NAME = 'ship';
-    private const SKELETON_DIRECTORY_NAME = 'Skeleton';
-    private const CONTAINERS_DIRECTORY_NAME = 'Containers';
+    private const SHIP_NAME = 'MagicPort/ship';
+    private const SKELETON_DIRECTORY_NAME = 'MagicPort/Skeleton';
+    private const CONTAINERS_DIRECTORY_NAME = 'Modules';
 
     public function getShipFoldersNames(): array
     {
@@ -178,13 +178,13 @@ class Apiato
 
     public function getAllContainerPaths(): array
     {
-        
+
         return [
             ...File::directories(File::directories(app_path(self::SKELETON_DIRECTORY_NAME))),
             ...File::directories(File::directories(app_path(self::CONTAINERS_DIRECTORY_NAME))),
         ];
 
-        
+
     }
 
     public function getSectionNames(): array
