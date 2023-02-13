@@ -26,7 +26,7 @@ class MigrationGenerator extends GeneratorCommand implements ComponentsGenerator
      *
      * @var string
      */
-    protected $name = 'apiato:generate:migration';
+    protected $name = 'mp:g:migration';
     /**
      * The console command description.
      *
@@ -40,7 +40,7 @@ class MigrationGenerator extends GeneratorCommand implements ComponentsGenerator
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{section-name}/{container-name}/Data/Migrations/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/Data/Migrations/*';
     /**
      * The structure of the file name.
      */
@@ -59,6 +59,7 @@ class MigrationGenerator extends GeneratorCommand implements ComponentsGenerator
         $exists = false;
 
         $folder = $this->parsePathStructure($this->pathStructure, [
+            'module-name' => $this->moduleName,
             'section-name' => $this->sectionName,
             'container-name' => $this->containerName,
         ]);
@@ -82,10 +83,13 @@ class MigrationGenerator extends GeneratorCommand implements ComponentsGenerator
 
         return [
             'path-parameters' => [
+                'module-name' => $this->moduleName,
                 'section-name' => $this->sectionName,
                 'container-name' => $this->containerName,
             ],
             'stub-parameters' => [
+                '_module-name' => Str::lower($this->moduleName),
+                'module-name' => $this->moduleName,
                 '_section-name' => Str::lower($this->sectionName),
                 'section-name' => $this->sectionName,
                 '_container-name' => Str::lower($this->containerName),

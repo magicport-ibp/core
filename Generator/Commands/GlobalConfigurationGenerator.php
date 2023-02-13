@@ -6,7 +6,7 @@ use Apiato\Core\Generator\GeneratorCommand;
 use Apiato\Core\Generator\Interfaces\ComponentsGenerator;
 use Illuminate\Support\Str;
 
-class MiddlewareGenerator extends GeneratorCommand implements ComponentsGenerator
+class GlobalConfigurationGenerator extends GeneratorCommand implements ComponentsGenerator
 {
     /**
      * User required/optional inputs expected to be passed while calling the command.
@@ -21,21 +21,21 @@ class MiddlewareGenerator extends GeneratorCommand implements ComponentsGenerato
      *
      * @var string
      */
-    protected $name = 'mp:g:middleware';
+    protected $name = 'mp:g:configuration:global';
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new Middleware class';
+    protected $description = 'Create a Configuration file for a Section';
     /**
      * The type of class being generated.
      */
-    protected string $fileType = 'Middleware';
+    protected string $fileType = 'Configuration';
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/Middlewares/*';
+    protected string $pathStructure = '{module-name}/{section-name}/Configs/*';
     /**
      * The structure of the file name.
      */
@@ -43,7 +43,7 @@ class MiddlewareGenerator extends GeneratorCommand implements ComponentsGenerato
     /**
      * The name of the stub file.
      */
-    protected string $stubName = 'middleware.stub';
+    protected string $stubName = 'config.stub';
 
     public function getUserInputs(): ?array
     {
@@ -68,8 +68,11 @@ class MiddlewareGenerator extends GeneratorCommand implements ComponentsGenerato
         ];
     }
 
+    /**
+     * Get the default file name for this component to be generated
+     */
     public function getDefaultFileName(): string
     {
-        return 'DefaultMiddleware';
+        return Str::camel($this->sectionName) . '-' . Str::camel($this->containerName);
     }
 }

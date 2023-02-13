@@ -26,7 +26,7 @@ class TaskGenerator extends GeneratorCommand implements ComponentsGenerator
      *
      * @var string
      */
-    protected $name = 'apiato:generate:task';
+    protected $name = 'mp:g:task';
     /**
      * The console command description.
      *
@@ -40,7 +40,7 @@ class TaskGenerator extends GeneratorCommand implements ComponentsGenerator
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{section-name}/{container-name}/Tasks/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/Tasks/*';
     /**
      * The structure of the file name.
      */
@@ -70,10 +70,13 @@ class TaskGenerator extends GeneratorCommand implements ComponentsGenerator
 
         return [
             'path-parameters' => [
+                'module-name' => $this->moduleName,
                 'section-name' => $this->sectionName,
                 'container-name' => $this->containerName,
             ],
             'stub-parameters' => [
+                '_module-name' => Str::lower($this->moduleName),
+                'module-name' => $this->moduleName,
                 '_section-name' => Str::lower($this->sectionName),
                 'section-name' => $this->sectionName,
                 '_container-name' => Str::lower($this->containerName),

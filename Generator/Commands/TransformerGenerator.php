@@ -25,7 +25,7 @@ class TransformerGenerator extends GeneratorCommand implements ComponentsGenerat
      *
      * @var string
      */
-    protected $name = 'apiato:generate:transformer';
+    protected $name = 'mp:g:transformer';
     /**
      * The console command description.
      *
@@ -39,7 +39,7 @@ class TransformerGenerator extends GeneratorCommand implements ComponentsGenerat
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{section-name}/{container-name}/UI/API/Transformers/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/UI/API/Transformers/*';
     /**
      * The structure of the file name.
      */
@@ -58,10 +58,13 @@ class TransformerGenerator extends GeneratorCommand implements ComponentsGenerat
 
         return [
             'path-parameters' => [
+                'module-name' => $this->moduleName,
                 'section-name' => $this->sectionName,
                 'container-name' => $this->containerName,
             ],
             'stub-parameters' => [
+                '_module-name' => Str::lower($this->moduleName),
+                'module-name' => $this->moduleName,
                 '_section-name' => Str::lower($this->sectionName),
                 'section-name' => $this->sectionName,
                 '_container-name' => Str::lower($this->containerName),

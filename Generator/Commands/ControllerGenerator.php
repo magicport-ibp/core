@@ -20,13 +20,14 @@ class ControllerGenerator extends GeneratorCommand implements ComponentsGenerato
     public array $inputs = [
         ['ui', null, InputOption::VALUE_OPTIONAL, 'The user-interface to generate the Controller for.'],
         ['stub', null, InputOption::VALUE_OPTIONAL, 'The stub file to load for this generator.'],
+
     ];
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'apiato:generate:controller';
+    protected $name = 'mp:g:controller';
     /**
      * The console command description.
      *
@@ -40,7 +41,7 @@ class ControllerGenerator extends GeneratorCommand implements ComponentsGenerato
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{section-name}/{container-name}/UI/{user-interface}/Controllers/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/UI/{user-interface}/Controllers/*';
     /**
      * The structure of the file name.
      */
@@ -77,18 +78,27 @@ class ControllerGenerator extends GeneratorCommand implements ComponentsGenerato
 
         return [
             'path-parameters' => [
+                'module-name' => $this->moduleName,
                 'section-name' => $this->sectionName,
                 'container-name' => $this->containerName,
                 'user-interface' => Str::upper($ui),
             ],
             'stub-parameters' => [
+                '_module-name' => Str::lower($this->moduleName),
+                '__module-name' => Str::camel($this->moduleName),
+                'module-name' => $this->moduleName,
                 '_section-name' => Str::lower($this->sectionName),
+                '__section-name' => Str::camel($this->sectionName),
                 'section-name' => $this->sectionName,
                 '_container-name' => Str::lower($this->containerName),
+                '__container-name' => Str::camel($this->containerName),
                 'container-name' => $this->containerName,
+                '__translation-name' => Str::camel($this->moduleName) . '-' . Str::camel($this->containerName),
                 'class-name' => $this->fileName,
                 'user-interface' => Str::upper($ui),
                 'base-controller' => $basecontroller,
+                'method-name' => Str::camel($this->option('file-name')),
+                'file-name' => $this->option('file-name'),
 
                 'model' => $model,
                 'models' => $models,

@@ -8,7 +8,7 @@ use Illuminate\Support\Pluralizer;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
-class ContainerApiGenerator extends GeneratorCommand implements ComponentsGenerator
+class ContainerFullRouterGenerator extends GeneratorCommand implements ComponentsGenerator
 {
     /**
      * User required/optional inputs expected to be passed while calling the command.
@@ -18,30 +18,31 @@ class ContainerApiGenerator extends GeneratorCommand implements ComponentsGenera
      */
     public array $inputs = [
         [ 'docversion' , null , InputOption::VALUE_OPTIONAL , 'The version of all endpoints to be generated (1, 2, ...)' ] ,
+        [ 'verb' , null , InputOption::VALUE_OPTIONAL , 'The HTTP verb of the endpoint (GET, POST, ...)' ] ,
         [ 'doctype' , null , InputOption::VALUE_OPTIONAL , 'The type of all endpoints to be generated (private, public)' ] ,
         [ 'url' , null , InputOption::VALUE_OPTIONAL , 'The base URI of all endpoints (/stores, /cars, ...)' ] ,
         [ 'controllertype' , null , InputOption::VALUE_OPTIONAL , 'The controller type (SAC, MAC)' ] ,
         [ 'events' , null , InputOption::VALUE_OPTIONAL , 'Generate Events for this Container?' ] ,
         [ 'listeners' , null , InputOption::VALUE_OPTIONAL , 'Generate Event Listeners for Events of this Container?' ] ,
         [ 'tests' , null , InputOption::VALUE_OPTIONAL , 'Generate Tests for this Container?' ] ,
-        [ 'maincalled' , false , InputOption::VALUE_NONE ] ,
+
     ];
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'mp:g:api';
+    protected $name = 'mp:g:route:full';
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a Container for apiato from scratch (API Part)';
+    protected $description = 'Create a new Route with Request, Controller, Action and etc.';
     /**
      * The type of class being generated.
      */
-    protected string $fileType = 'Container';
+    protected string $fileType = 'Route';
     /**
      * The structure of the file path.
      */
@@ -53,7 +54,7 @@ class ContainerApiGenerator extends GeneratorCommand implements ComponentsGenera
     /**
      * The name of the stub file.
      */
-    protected string $stubName = 'composer.stub';
+    protected string $stubName = 'routes/generic.stub';
 
     public function getUserInputs(): ?array
     {
@@ -75,120 +76,13 @@ class ContainerApiGenerator extends GeneratorCommand implements ComponentsGenera
         $model = $this->containerName;
         $models = Pluralizer::plural($model);
 
-        // add the README file
-        $this->printInfoMessage('Generating README File');
-        $this->call('mp:g:readme' , [
-            '--core'      => $this->core ,
-            '--module'    => $moduleName ,
-            '--section'   => $sectionName ,
-            '--container' => $containerName ,
-            '--file'      => 'README' ,
-        ]);
 
-        $globalConfiguration = Str::lower($this->checkParameterOrChoice('controllertype' , 'Select the configuration file type ' , [ 'global' , 'specific' ] , 0));
-
-
-        if ( $globalConfiguration === 'global' ) {
-            // create the global configuration file
-            $this->printInfoMessage('Generating Global Configuration File');
-            $this->call('mp:g:configuration:global' , [
-                '--core'      => $this->core ,
-                '--module'    => $moduleName ,
-                '--section'   => $sectionName ,
-                '--container' => $containerName ,
-                '--file'      => Str::camel($moduleName) . '-' . Str::camel($this->containerName) ,
-            ]);
-        } else {
-            // create the configuration file
-            $this->printInfoMessage('Generating Configuration File');
-            $this->call('mp:g:configuration' , [
-                '--core'      => $this->core ,
-                '--module'    => $moduleName ,
-                '--section'   => $sectionName ,
-                '--container' => $containerName ,
-                '--file'      => Str::camel($this->sectionName) . '-' . Str::camel($this->containerName) ,
-            ]);
-        }
-
-        // create the Documentation File
-        $this->printInfoMessage('Generating Documentation Container');
-        $this->call('mp:g:documentation' , [
-            '--core'      => $this->core ,
-            '--module'    => $moduleName ,
-        ]);
-
-
-        // create the Transaltion File
-        $this->printInfoMessage('Generating Translation File');
-        $this->call('mp:g:language' , [
-            '--core'      => $this->core ,
-            '--module'    => $moduleName ,
-            '--section'   => $sectionName ,
-            '--container' => $containerName ,
-            '--skip'      => true ,
-
-        ]);
-
-        // create the MainServiceProvider for the container
-        $this->printInfoMessage('Generating MainServiceProvider');
-        $this->call('mp:g:provider' , [
-            '--core'      => $this->core ,
-            '--module'    => $moduleName ,
-            '--section'   => $sectionName ,
-            '--container' => $containerName ,
-            '--file'      => 'MainServiceProvider' ,
-            '--stub'      => 'mainserviceprovider' ,
-        ]);
-
-        // create the model and repository for this container
-        $this->printInfoMessage('Generating Model and Repository');
-        $this->call('mp:g:model' , [
-            '--core'       => $this->core ,
-            '--module'     => $moduleName ,
-            '--section'    => $sectionName ,
-            '--container'  => $containerName ,
-            '--file'       => $model ,
-            '--repository' => true ,
-        ]);
-
-        // create the migration file for the model
-        $this->printInfoMessage('Generating a basic Migration file');
-        $this->call('mp:g:migration' , [
-            '--core'      => $this->core ,
-            '--module'    => $moduleName ,
-            '--section'   => $sectionName ,
-            '--container' => $containerName ,
-            '--file'      => 'create_' . Str::snake($models) . '_table' ,
-            '--tablename' => Str::snake($models) ,
-        ]);
-
-        // create a transformer for the model
-        $this->printInfoMessage('Generating Transformer for the Model');
-        $this->call('mp:g:transformer' , [
-            '--core'      => $this->core ,
-            '--module'    => $moduleName ,
-            '--section'   => $sectionName ,
-            '--container' => $containerName ,
-            '--file'      => $containerName . 'Transformer' ,
-            '--model'     => $model ,
-            '--full'      => false ,
-        ]);
-
-        // create a factory for the model
-        $this->printInfoMessage('Generating Factory for the Model');
-        $this->call('mp:g:factory' , [
-            '--core'      => $this->core ,
-            '--module'    => $moduleName ,
-            '--section'   => $sectionName ,
-            '--container' => $containerName ,
-            '--file'      => $containerName . 'Factory' ,
-            '--model'     => $model ,
-        ]);
 
         // create the default routes for this container
-        $this->printInfoMessage('Generating Default Routes');
-        $version = $this->checkParameterOrAsk('docversion' , 'Enter the version for all API endpoints (integer)' , 1);
-        $doctype = $this->checkParameterOrAsk('doctype' , 'Select the type for Documentation API ' , Str::lower($this->moduleName));
+        $this->printInfoMessage('Generating Default Route');
+        $version = $this->checkParameterOrAsk('docversion' , 'Enter the version for  API endpoint (integer)' , 1);
+        $doctype = $this->checkParameterOrAsk('doctype' , 'Select the type for API endpoint' , Str::lower($this->moduleName) );
+        $verb = Str::upper($this->checkParameterOrAsk('verb' , 'Enter the HTTP verb of this endpoint (GET, POST,...)', 'GET'));
 
         // get the URI and remove the first trailing slash
         $url = Str::lower($this->checkParameterOrAsk('url' , 'Enter the base URI for all API endpoints (foo/bar/{id})' , Str::kebab($models)));
@@ -211,84 +105,82 @@ class ContainerApiGenerator extends GeneratorCommand implements ComponentsGenera
         $this->printInfoMessage('Generating Default Actions');
         $this->printInfoMessage('Generating Default Tasks');
         $this->printInfoMessage('Generating Default Controller/s');
-        $this->printInfoMessage('Generating Default Global Configuration File');
 
         $routes = [
             [
-                'stub'           => 'GetAll' ,
-                'name'           => 'GetAll' . $models ,
-                'operation'      => 'getAll' . $models ,
-                'verb'           => 'GET' ,
-                'url'            => $url ,
-                'action'         => 'GetAll' . $models . 'Action' ,
-                'request'        => 'GetAll' . $models . 'Request' ,
-                'task'           => 'GetAll' . $models . 'Task' ,
-                'unittest'       => 'GetAll' . $models . 'TaskTest' ,
-                'functionaltest' => 'GetAll' . $models . 'Test' ,
+                'stub'           => 'generic' ,
+                'name'           =>  $this->fileName . $models ,
+                'operation'      =>  Str::camel($this->fileName) . $models ,
+                'verb'           =>  $verb ,
+                'url'            =>  $url ,
+                'action'         => $this->fileName . $models . 'Action' ,
+                'request'        => $this->fileName . $models . 'Request' ,
+                'task'           => $this->fileName . $models . 'Task' ,
+                'unittest'       => $this->fileName . $models . 'TaskTest' ,
+                'functionaltest' => $this->fileName . $models . 'Test' ,
                 'event'          => $models . 'ListedEvent' ,
-                'controller'     => 'GetAll' . $models . 'Controller' ,
+                'controller'     => $this->fileName . $models . 'Controller' ,
+                'file-name'      => $this->fileName . $models ,
             ] ,
-            [
-                'stub'           => 'Find' ,
-                'name'           => 'Find' . $model . 'ById' ,
-                'operation'      => 'find' . $model . 'ById' ,
-                'verb'           => 'GET' ,
-                'url'            => $url . '/{id}' ,
-                'action'         => 'Find' . $model . 'ById' . 'Action' ,
-                'request'        => 'Find' . $model . 'ById' . 'Request' ,
-                'task'           => 'Find' . $model . 'ById' . 'Task' ,
-                'unittest'       => 'Find' . $model . 'ById' . 'TaskTest' ,
-                'functionaltest' => 'Find' . $model . 'ById' . 'Test' ,
-                'event'          => $model . 'FoundById' . 'Event' ,
-                'controller'     => 'Find' . $model . 'ById' . 'Controller' ,
-            ] ,
-            [
-                'stub'           => 'Create' ,
-                'name'           => 'Create' . $model ,
-                'operation'      => 'create' . $model ,
-                'verb'           => 'POST' ,
-                'url'            => $url ,
-                'action'         => 'Create' . $model . 'Action' ,
-                'request'        => 'Create' . $model . 'Request' ,
-                'task'           => 'Create' . $model . 'Task' ,
-                'unittest'       => 'Create' . $model . 'TaskTest' ,
-                'functionaltest' => 'Create' . $model . 'Test' ,
-                'event'          => $model . 'CreatedEvent' ,
-                'controller'     => 'Create' . $model . 'Controller' ,
-            ] ,
-            [
-                'stub'           => 'Update' ,
-                'name'           => 'Update' . $model ,
-                'operation'      => 'update' . $model ,
-                'verb'           => 'PATCH' ,
-                'url'            => $url . '/{id}' ,
-                'action'         => 'Update' . $model . 'Action' ,
-                'request'        => 'Update' . $model . 'Request' ,
-                'task'           => 'Update' . $model . 'Task' ,
-                'unittest'       => 'Update' . $model . 'TaskTest' ,
-                'functionaltest' => 'Update' . $model . 'Test' ,
-                'event'          => $model . 'UpdatedEvent' ,
-                'controller'     => 'Update' . $model . 'Controller' ,
-            ] ,
-            [
-                'stub'           => 'Delete' ,
-                'name'           => 'Delete' . $model ,
-                'operation'      => 'delete' . $model ,
-                'verb'           => 'DELETE' ,
-                'url'            => $url . '/{id}' ,
-                'action'         => 'Delete' . $model . 'Action' ,
-                'request'        => 'Delete' . $model . 'Request' ,
-                'task'           => 'Delete' . $model . 'Task' ,
-                'unittest'       => 'Delete' . $model . 'TaskTest' ,
-                'functionaltest' => 'Delete' . $model . 'Test' ,
-                'event'          => $model . 'DeletedEvent' ,
-                'controller'     => 'Delete' . $model . 'Controller' ,
-            ] ,
+//            [
+//                'stub'           => 'Find' ,
+//                'name'           => 'Find' . $model . 'ById' ,
+//                'operation'      => 'find' . $model . 'ById' ,
+//                'verb'           => 'GET' ,
+//                'url'            => $url . '/{id}' ,
+//                'action'         => 'Find' . $model . 'ById' . 'Action' ,
+//                'request'        => 'Find' . $model . 'ById' . 'Request' ,
+//                'task'           => 'Find' . $model . 'ById' . 'Task' ,
+//                'unittest'       => 'Find' . $model . 'ById' . 'TaskTest' ,
+//                'functionaltest' => 'Find' . $model . 'ById' . 'Test' ,
+//                'event'          => $model . 'FoundById' . 'Event' ,
+//                'controller'     => 'Find' . $model . 'ById' . 'Controller' ,
+//            ] ,
+//            [
+//                'stub'           => 'Create' ,
+//                'name'           => 'Create' . $model ,
+//                'operation'      => 'create' . $model ,
+//                'verb'           => 'POST' ,
+//                'url'            => $url ,
+//                'action'         => 'Create' . $model . 'Action' ,
+//                'request'        => 'Create' . $model . 'Request' ,
+//                'task'           => 'Create' . $model . 'Task' ,
+//                'unittest'       => 'Create' . $model . 'TaskTest' ,
+//                'functionaltest' => 'Create' . $model . 'Test' ,
+//                'event'          => $model . 'CreatedEvent' ,
+//                'controller'     => 'Create' . $model . 'Controller' ,
+//            ] ,
+//            [
+//                'stub'           => 'Update' ,
+//                'name'           => 'Update' . $model ,
+//                'operation'      => 'update' . $model ,
+//                'verb'           => 'PATCH' ,
+//                'url'            => $url . '/{id}' ,
+//                'action'         => 'Update' . $model . 'Action' ,
+//                'request'        => 'Update' . $model . 'Request' ,
+//                'task'           => 'Update' . $model . 'Task' ,
+//                'unittest'       => 'Update' . $model . 'TaskTest' ,
+//                'functionaltest' => 'Update' . $model . 'Test' ,
+//                'event'          => $model . 'UpdatedEvent' ,
+//                'controller'     => 'Update' . $model . 'Controller' ,
+//            ] ,
+//            [
+//                'stub'           => 'Delete' ,
+//                'name'           => 'Delete' . $model ,
+//                'operation'      => 'delete' . $model ,
+//                'verb'           => 'DELETE' ,
+//                'url'            => $url . '/{id}' ,
+//                'action'         => 'Delete' . $model . 'Action' ,
+//                'request'        => 'Delete' . $model . 'Request' ,
+//                'task'           => 'Delete' . $model . 'Task' ,
+//                'unittest'       => 'Delete' . $model . 'TaskTest' ,
+//                'functionaltest' => 'Delete' . $model . 'Test' ,
+//                'event'          => $model . 'DeletedEvent' ,
+//                'controller'     => 'Delete' . $model . 'Controller' ,
+//            ] ,
         ];
 
         foreach ( $routes as $route ) {
-
-
             $this->call('mp:g:request' , [
                 '--core'      => $this->core ,
                 '--module'    => $moduleName ,
@@ -297,6 +189,7 @@ class ContainerApiGenerator extends GeneratorCommand implements ComponentsGenera
                 '--file'      => $route['request'] ,
                 '--ui'        => $ui ,
                 '--stub'      => $route['stub'] ,
+
             ]);
 
             $this->call('mp:g:action' , [
@@ -307,7 +200,8 @@ class ContainerApiGenerator extends GeneratorCommand implements ComponentsGenera
                 '--file'      => $route['action'] ,
                 '--ui'        => $ui ,
                 '--model'     => $model ,
-                '--stub'      => $route['stub'] ,
+                '--stub'      => 'route' ,
+                '--file-name' => $route['file-name'] ,
             ]);
 
             $this->call('mp:g:task' , [
@@ -416,7 +310,8 @@ class ContainerApiGenerator extends GeneratorCommand implements ComponentsGenera
                     '--container' => $containerName ,
                     '--file'      => $route['controller'] ,
                     '--ui'        => $ui ,
-                    '--stub'      => $route['stub'] ,
+                    '--stub'      => 'route' ,
+                    '--file-name' => $route['file-name'] ,
                 ]);
             } else {
                 $this->call('mp:g:route' , [
@@ -449,45 +344,28 @@ class ContainerApiGenerator extends GeneratorCommand implements ComponentsGenera
             ]);
         }
 
-        $generateComposerFile = [
-            'path-parameters' => [
-                'module-name'    => $this->moduleName ,
-                'section-name'   => $this->sectionName ,
-                'container-name' => $this->containerName ,
-            ] ,
-            'stub-parameters' => [
-                '_module-name'    => $_moduleName ,
-                'module-name'     => $this->moduleName ,
-                '_section-name'   => $_sectionName ,
-                'section-name'    => $this->sectionName ,
-                '_container-name' => $_containerName ,
-                'container-name'  => $containerName ,
-                'class-name'      => $this->fileName ,
-            ] ,
-            'file-parameters' => [
-                'file-name' => $this->fileName ,
-            ] ,
-        ];
 
-        if ( !$this->option('maincalled') ) {
-            $this->printInfoMessage('Generating Composer File');
-            return $generateComposerFile;
-        }
 
         return null;
 
     }
 
-    /**
-     * Get the default file name for this component to be generated
-     */
-    public function getDefaultFileName(): string
-    {
-        return 'composer';
-    }
+//    /**
+//     * Get the default file name for this component to be generated
+//     */
+//    public function getDefaultFileName(): string
+//    {
+//        return 'composer';
+//    }
 
     public function getDefaultFileExtension($ext = 'php'): string
     {
         return 'json';
+    }
+
+
+    public function getDefaultFileName(): string
+    {
+        return 'GetList'; // TODO: Change the autogenerated stub
     }
 }

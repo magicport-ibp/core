@@ -26,7 +26,7 @@ class TestUnitTestGenerator extends GeneratorCommand implements ComponentsGenera
      *
      * @var string
      */
-    protected $name = 'apiato:generate:test:unit';
+    protected $name = 'mp:g:test:unit';
     /**
      * The console command description.
      *
@@ -40,7 +40,7 @@ class TestUnitTestGenerator extends GeneratorCommand implements ComponentsGenera
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{section-name}/{container-name}/Tests/Unit/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/Tests/Unit/*';
     /**
      * The structure of the file name.
      */
@@ -69,7 +69,10 @@ class TestUnitTestGenerator extends GeneratorCommand implements ComponentsGenera
         $models = Str::plural($model);
 
         // We need to generate the TestCase class before
-        $this->call('apiato:generate:test:testcase', [
+        $this->call('mp:g:test:testcase', [
+            '--core' => $this->core,
+            '--module' => $this->moduleName,
+            '--module'  => $this->moduleName,
             '--section' => $this->sectionName,
             '--container' => $this->containerName,
             '--file' => 'TestCase',
@@ -78,10 +81,13 @@ class TestUnitTestGenerator extends GeneratorCommand implements ComponentsGenera
 
         return [
             'path-parameters' => [
+                'module-name' => $this->moduleName,
                 'section-name' => $this->sectionName,
                 'container-name' => $this->containerName,
             ],
             'stub-parameters' => [
+                '_module-name' => Str::lower($this->moduleName),
+                'module-name' => $this->moduleName,
                 '_section-name' => Str::lower($this->sectionName),
                 'section-name' => $this->sectionName,
                 '_container-name' => Str::lower($this->containerName),

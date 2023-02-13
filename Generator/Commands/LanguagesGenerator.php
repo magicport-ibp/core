@@ -6,7 +6,7 @@ use Apiato\Core\Generator\GeneratorCommand;
 use Apiato\Core\Generator\Interfaces\ComponentsGenerator;
 use Illuminate\Support\Str;
 
-class MiddlewareGenerator extends GeneratorCommand implements ComponentsGenerator
+class LanguagesGenerator extends GeneratorCommand implements ComponentsGenerator
 {
     /**
      * User required/optional inputs expected to be passed while calling the command.
@@ -21,21 +21,21 @@ class MiddlewareGenerator extends GeneratorCommand implements ComponentsGenerato
      *
      * @var string
      */
-    protected $name = 'mp:g:middleware';
+    protected $name = 'mp:g:language';
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new Middleware class';
+    protected $description = 'Create a Configuration file for a Container';
     /**
      * The type of class being generated.
      */
-    protected string $fileType = 'Middleware';
+    protected string $fileType = 'Translation File';
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/Middlewares/*';
+    protected string $pathStructure = '{module-name}/{section-name}/Languages/en/*';
     /**
      * The structure of the file name.
      */
@@ -43,7 +43,7 @@ class MiddlewareGenerator extends GeneratorCommand implements ComponentsGenerato
     /**
      * The name of the stub file.
      */
-    protected string $stubName = 'middleware.stub';
+    protected string $stubName = 'lang.stub';
 
     public function getUserInputs(): ?array
     {
@@ -54,22 +54,26 @@ class MiddlewareGenerator extends GeneratorCommand implements ComponentsGenerato
                 'container-name' => $this->containerName,
             ],
             'stub-parameters' => [
-                '_module-name' => Str::lower($this->moduleName),
+                '_module-name' => Str::camel($this->moduleName),
                 'module-name' => $this->moduleName,
                 '_section-name' => Str::lower($this->sectionName),
                 'section-name' => $this->sectionName,
-                '_container-name' => Str::lower($this->containerName),
+                '_container-name' => Str::camel($this->containerName),
                 'container-name' => $this->containerName,
                 'class-name' => $this->fileName,
+                'file-name' => $this->getDefaultFileName(),
             ],
             'file-parameters' => [
-                'file-name' => $this->fileName,
+                'file-name' => $this->getDefaultFileName(),
             ],
         ];
     }
 
+    /**
+     * Get the default file name for this component to be generated
+     */
     public function getDefaultFileName(): string
     {
-        return 'DefaultMiddleware';
+        return Str::camel($this->moduleName) . '-' . Str::camel($this->containerName);
     }
 }

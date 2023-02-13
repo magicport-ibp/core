@@ -23,7 +23,7 @@ class MailGenerator extends GeneratorCommand implements ComponentsGenerator
      *
      * @var string
      */
-    protected $name = 'apiato:generate:mail';
+    protected $name = 'mp:g:mail';
     /**
      * The console command description.
      *
@@ -37,7 +37,7 @@ class MailGenerator extends GeneratorCommand implements ComponentsGenerator
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{section-name}/{container-name}/Mails/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/Mails/*';
     /**
      * The structure of the file name.
      */
@@ -53,6 +53,7 @@ class MailGenerator extends GeneratorCommand implements ComponentsGenerator
 
         return [
             'path-parameters' => [
+                'module-name' => $this->moduleName,
                 'section-name' => $this->sectionName,
                 'container-name' => $this->containerName,
             ],

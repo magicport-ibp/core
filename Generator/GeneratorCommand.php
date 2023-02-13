@@ -26,7 +26,9 @@ abstract class GeneratorCommand extends Command
      *
      * @var string
      */
-    private const ROOT = 'app/Containers';
+    private const MODULES = 'app/Modules';
+
+    private const CORE_MODULES = 'app/MagicPort/Modules';
 
     /**
      * Relative path for the stubs (relative to this directory / file)
@@ -53,6 +55,16 @@ abstract class GeneratorCommand extends Command
     protected string $filePath;
 
     /**
+     * @var string Module on Core or Modules
+     */
+    protected bool $core = false;
+
+    /**
+     * @var string the name of the module to generate the stubs
+     */
+    protected string $moduleName;
+
+    /**
      * @var string the name of the section to generate the stubs
      */
     protected string $sectionName;
@@ -75,12 +87,16 @@ abstract class GeneratorCommand extends Command
 
     protected $renderedStubContent;
 
-    private IlluminateFilesystem $fileSystem;
+    protected IlluminateFilesystem $fileSystem;
 
     private array $defaultInputs = [
+        ['core', null, InputOption::VALUE_OPTIONAL, 'The name of the module'],
+        ['module', null, InputOption::VALUE_OPTIONAL, 'The name of the module'],
         ['section', null, InputOption::VALUE_OPTIONAL, 'The name of the section'],
         ['container', null, InputOption::VALUE_OPTIONAL, 'The name of the container'],
         ['file', null, InputOption::VALUE_OPTIONAL, 'The name of the file'],
+        ['file-name', null, InputOption::VALUE_OPTIONAL, 'The file name without any other charters.'],
+        ['skip', null, InputOption::VALUE_OPTIONAL, 'The file name without any other charters.'],
     ];
 
     public function __construct(IlluminateFilesystem $fileSystem)
@@ -97,21 +113,33 @@ abstract class GeneratorCommand extends Command
      */
     public function handle()
     {
+
+
         $this->validateGenerator($this);
-
-        $this->sectionName = ucfirst($this->checkParameterOrAsk('section', 'Enter the name of the Section', self::DEFAULT_SECTION_NAME));
+        $this->core = $this->checkParameterOrConfirm('core', 'Is this a core module?', false) ;
+        $this->moduleName = ucfirst($this->checkParameterOrAsk('module', 'Enter the name of the Module', ));
+        $this->sectionName = ucfirst($this->checkParameterOrAsk('section', 'Enter the name of the Section', ));
         $this->containerName = ucfirst($this->checkParameterOrAsk('container', 'Enter the name of the Container'));
-        $this->fileName = $this->checkParameterOrAsk('file', 'Enter the name of the ' . $this->fileType . ' file', $this->getDefaultFileName());
 
+        if ($this->option('skip') == true)
+        {
+            $this->fileName =  $this->getDefaultFileName();
+
+        }
+        else{
+            $this->fileName = $this->checkParameterOrAsk('file', 'Enter the name of the ' . $this->fileType . ' file', $this->getDefaultFileName());
+
+        }
         // Now fix the section, container and file name
-        $this->sectionName = $this->removeSpecialChars($this->sectionName);
+        $this->moduleName = $this->removeSpecialChars($this->moduleName);
+        $this->sectionName = $this->removeSpecialCharsAndAddSuffix($this->sectionName)  ;
         $this->containerName = $this->removeSpecialChars($this->containerName);
         if (!($this->fileType === 'Configuration')) {
             $this->fileName = $this->removeSpecialChars($this->fileName);
         }
 
         // And we are ready to start
-        $this->printStartedMessage($this->sectionName . ':' . $this->containerName, $this->fileName);
+        $this->printStartedMessage($this->moduleName . ':' .$this->sectionName . ':' . $this->containerName, $this->fileName);
 
         // Get user inputs
         $this->userData = $this->getUserInputs();
@@ -120,6 +148,7 @@ abstract class GeneratorCommand extends Command
             // The user skipped this step
             return;
         }
+
         $this->userData = $this->sanitizeUserData($this->userData);
 
         // Get the actual path of the output file as well as the correct filename
@@ -129,6 +158,12 @@ abstract class GeneratorCommand extends Command
         if (!$this->fileSystem->exists($this->filePath)) {
             // Prepare stub content
             $this->stubContent = $this->getStubContent();
+
+
+            //Define Module in App\MagicPort\Modules or App\Modules
+           $this->checkIsCoreFolder() ;
+
+
             $this->renderedStubContent = $this->parseStubContent($this->stubContent, $this->userData['stub-parameters']);
 
             $this->generateFile($this->filePath, $this->renderedStubContent);
@@ -194,6 +229,34 @@ abstract class GeneratorCommand extends Command
         return preg_replace('/[^A-Za-z0-9]/', '', $str);
     }
 
+    protected function checkIsCoreFolder()
+    {
+        //Define Module in App\MagicPort\Modules or App\Modules
+        if ($this->core)
+        {
+            $this->userData['stub-parameters']['module-name'] = 'App\\MagicPort\\Modules\\' . $this->userData['stub-parameters']['module-name'];
+        }
+        else{
+            $this->userData['stub-parameters']['module-name'] = 'App\\Modules\\' . $this->userData['stub-parameters']['module-name'];
+
+        }
+    }
+
+
+    protected function removeSpecialCharsAndAddSuffix($str): string
+    {
+        // remove everything that is NOT a character or digit
+        $string = preg_replace('/[^A-Za-z0-9]/', '', $str);
+
+        if (str_ends_with($string, 'Section')) {
+            return $string;
+        }
+        else {
+            return $string . 'Section';
+        }
+
+    }
+
     /**
      * Checks, if the data from the generator contains path, stub and file-parameters.
      * Adds empty arrays, if they are missing
@@ -203,6 +266,7 @@ abstract class GeneratorCommand extends Command
      */
     private function sanitizeUserData($data): mixed
     {
+
         if (!array_key_exists('path-parameters', $data)) {
             $data['path-parameters'] = [];
         }
@@ -218,11 +282,13 @@ abstract class GeneratorCommand extends Command
         return $data;
     }
 
-    protected function getFilePath($path): string
+    protected function getFilePath($path,$ext = 'php'): string
     {
+
+        $root = $this->core ? self::CORE_MODULES : self::MODULES;
         // Complete the missing parts of the path
         $path = base_path() . '/' .
-            str_replace('\\', '/', self::ROOT . '/' . $path) . '.' . $this->getDefaultFileExtension();
+            str_replace('\\', '/', $root . '/' . $path) . '.' . $this->getDefaultFileExtension($ext);
 
         // Try to create directory
         $this->createDirectory($path);
@@ -234,9 +300,9 @@ abstract class GeneratorCommand extends Command
     /**
      * Get the default file extension for the file to be created.
      */
-    protected function getDefaultFileExtension(): string
+    protected function getDefaultFileExtension($ext = 'php'): string
     {
-        return 'php';
+        return $ext;
     }
 
     /**
@@ -246,7 +312,7 @@ abstract class GeneratorCommand extends Command
     protected function getStubContent(): string
     {
         // Check if there is a custom file that overrides the default stubs
-        $path = app_path() . '/Ship/' . self::CUSTOM_STUB_PATH;
+        $path = app_path() . '/MagicPort/Ship/' . self::CUSTOM_STUB_PATH;
         $file = str_replace('*', $this->stubName, $path);
 
         // Check if the custom file exists

@@ -21,7 +21,7 @@ class PolicyGenerator extends GeneratorCommand implements ComponentsGenerator
      *
      * @var string
      */
-    protected $name = 'apiato:generate:policy';
+    protected $name = 'mp:g:policy';
     /**
      * The console command description.
      *
@@ -35,7 +35,7 @@ class PolicyGenerator extends GeneratorCommand implements ComponentsGenerator
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{section-name}/{container-name}/Policies/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/Policies/*';
     /**
      * The structure of the file name.
      */
@@ -49,10 +49,13 @@ class PolicyGenerator extends GeneratorCommand implements ComponentsGenerator
     {
         return [
             'path-parameters' => [
+                'module-name' => $this->moduleName,
                 'section-name' => $this->sectionName,
                 'container-name' => $this->containerName,
             ],
             'stub-parameters' => [
+                '_module-name' => Str::lower($this->moduleName),
+                'module-name' => $this->moduleName,
                 '_section-name' => Str::lower($this->sectionName),
                 'section-name' => $this->sectionName,
                 '_container-name' => Str::lower($this->containerName),

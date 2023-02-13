@@ -16,14 +16,14 @@ class ModelGenerator extends GeneratorCommand implements ComponentsGenerator
      * @var  array
      */
     public array $inputs = [
-        ['repository', null, InputOption::VALUE_OPTIONAL, 'Generate the corresponding Repository for this Model?'],
+        [ 'repository' , null , InputOption::VALUE_OPTIONAL , 'Generate the corresponding Repository for this Model?' ] ,
     ];
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'apiato:generate:model';
+    protected $name = 'mp:g:model';
     /**
      * The console command description.
      *
@@ -37,7 +37,7 @@ class ModelGenerator extends GeneratorCommand implements ComponentsGenerator
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{section-name}/{container-name}/Models/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/Models/*';
     /**
      * The structure of the file name.
      */
@@ -49,37 +49,42 @@ class ModelGenerator extends GeneratorCommand implements ComponentsGenerator
 
     public function getUserInputs(): ?array
     {
-        $repository = $this->checkParameterOrConfirm('repository', 'Do you want to generate the corresponding Repository for this Model?', true);
-        if ($repository) {
+        $repository = $this->checkParameterOrConfirm('repository' , 'Do you want to generate the corresponding Repository for this Model?' , true);
+        if ( $repository ) {
             // We need to generate a corresponding repository
             // so call the other command
-            $status = $this->call('apiato:generate:repository', [
-                '--section' => $this->sectionName,
-                '--container' => $this->containerName,
-                '--file' => $this->fileName . 'Repository',
+            $status = $this->call('mp:g:repository' , [
+                '--core'      => $this->core ,
+                '--module'    => $this->moduleName ,
+                '--section'   => $this->sectionName ,
+                '--container' => $this->containerName ,
+                '--file'      => $this->fileName . 'Repository' ,
             ]);
 
-            if ($status != 0) {
+            if ( $status != 0 ) {
                 $this->printErrorMessage('Could not generate the corresponding Repository!');
             }
         }
 
         return [
             'path-parameters' => [
-                'section-name' => $this->sectionName,
-                'container-name' => $this->containerName,
-            ],
+                'module-name'    => $this->moduleName ,
+                'section-name'   => $this->sectionName ,
+                'container-name' => $this->containerName ,
+            ] ,
             'stub-parameters' => [
-                '_section-name' => Str::lower($this->sectionName),
-                'section-name' => $this->sectionName,
-                '_container-name' => Str::lower($this->containerName),
-                'container-name' => $this->containerName,
-                'class-name' => $this->fileName,
-                'resource-key' => $this->fileName,
-            ],
+                '_module-name'    => Str::lower($this->moduleName) ,
+                'module-name'     => $this->moduleName ,
+                '_section-name'   => Str::lower($this->sectionName) ,
+                'section-name'    => $this->sectionName ,
+                '_container-name' => Str::lower($this->containerName) ,
+                'container-name'  => $this->containerName ,
+                'class-name'      => $this->fileName ,
+                'resource-key'    => $this->fileName ,
+            ] ,
             'file-parameters' => [
-                'file-name' => $this->fileName,
-            ],
+                'file-name' => $this->fileName ,
+            ] ,
         ];
     }
 }

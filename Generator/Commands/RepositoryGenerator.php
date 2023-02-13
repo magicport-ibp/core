@@ -21,7 +21,7 @@ class RepositoryGenerator extends GeneratorCommand implements ComponentsGenerato
      *
      * @var string
      */
-    protected $name = 'apiato:generate:repository';
+    protected $name = 'mp:g:repository';
     /**
      * The console command description.
      *
@@ -35,7 +35,7 @@ class RepositoryGenerator extends GeneratorCommand implements ComponentsGenerato
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{section-name}/{container-name}/Data/Repositories/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/Data/Repositories/*';
     /**
      * The structure of the file name.
      */
@@ -49,10 +49,13 @@ class RepositoryGenerator extends GeneratorCommand implements ComponentsGenerato
     {
         return [
             'path-parameters' => [
+                'module-name' => $this->moduleName,
                 'section-name' => $this->sectionName,
                 'container-name' => $this->containerName,
             ],
             'stub-parameters' => [
+                '_module-name' => Str::lower($this->moduleName),
+                'module-name' => $this->moduleName,
                 '_section-name' => Str::lower($this->sectionName),
                 'section-name' => $this->sectionName,
                 '_container-name' => Str::lower($this->containerName),

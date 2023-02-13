@@ -26,7 +26,7 @@ class TestFunctionalTestGenerator extends GeneratorCommand implements Components
      *
      * @var string
      */
-    protected $name = 'apiato:generate:test:functional';
+    protected $name = 'mp:g:test:functional';
     /**
      * The console command description.
      *
@@ -40,7 +40,7 @@ class TestFunctionalTestGenerator extends GeneratorCommand implements Components
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{section-name}/{container-name}/UI/{user-interface}/Tests/Functional/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/UI/{user-interface}/Tests/Functional/*';
     /**
      * The structure of the file name.
      */
@@ -65,7 +65,10 @@ class TestFunctionalTestGenerator extends GeneratorCommand implements Components
         $models = Str::plural($model);
 
         // We need to generate the TestCase class before
-        $this->call('apiato:generate:test:testcase', [
+        $this->call('mp:g:test:testcase', [
+            '--core' => $this->core,
+            '--module' => $this->moduleName,
+            '--module'  => $this->moduleName,
             '--section' => $this->sectionName,
             '--container' => $this->containerName,
             // $ui will be prepended to this string while creating the file.
@@ -76,11 +79,14 @@ class TestFunctionalTestGenerator extends GeneratorCommand implements Components
 
         return [
             'path-parameters' => [
+                'module-name' => $this->moduleName,
                 'section-name' => $this->sectionName,
                 'container-name' => $this->containerName,
                 'user-interface' => Str::upper($ui),
             ],
             'stub-parameters' => [
+                '_module-name' => Str::lower($this->moduleName),
+                'module-name' => $this->moduleName,
                 '_section-name' => Str::lower($this->sectionName),
                 'section-name' => $this->sectionName,
                 '_container-name' => Str::lower($this->containerName),

@@ -4,8 +4,12 @@ namespace Apiato\Core\Generator;
 
 use Apiato\Core\Generator\Commands\ActionGenerator;
 use Apiato\Core\Generator\Commands\ConfigurationGenerator;
+use Apiato\Core\Generator\Commands\GlobalConfigurationGenerator;
 use Apiato\Core\Generator\Commands\ContainerApiGenerator;
+use Apiato\Core\Generator\Commands\DocumentationGenerator;
+use Apiato\Core\Generator\Commands\ContainerFullRouterGenerator;
 use Apiato\Core\Generator\Commands\ContainerGenerator;
+use Apiato\Core\Generator\Commands\LanguagesGenerator;
 use Apiato\Core\Generator\Commands\ContainerWebGenerator;
 use Apiato\Core\Generator\Commands\ControllerGenerator;
 use Apiato\Core\Generator\Commands\EventGenerator;
@@ -51,7 +55,11 @@ class GeneratorsServiceProvider extends ServiceProvider
         // add your generators here
         return $generatorCommands = [
             ActionGenerator::class,
+            DocumentationGenerator::class,
             ConfigurationGenerator::class,
+            GlobalConfigurationGenerator::class,
+            LanguagesGenerator::class,
+            ContainerFullRouterGenerator::class,
             ContainerGenerator::class,
             ContainerApiGenerator::class,
             ContainerWebGenerator::class,

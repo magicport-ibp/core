@@ -24,7 +24,7 @@ class ContainerWebGenerator extends GeneratorCommand implements ComponentsGenera
      *
      * @var string
      */
-    protected $name = 'apiato:generate:container:web';
+    protected $name = 'mp:g:web';
     /**
      * The console command description.
      *
@@ -38,7 +38,7 @@ class ContainerWebGenerator extends GeneratorCommand implements ComponentsGenera
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{section-name}/{container-name}/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/*';
     /**
      * The structure of the file name.
      */
@@ -66,7 +66,9 @@ class ContainerWebGenerator extends GeneratorCommand implements ComponentsGenera
 
         // add the README file
         $this->printInfoMessage('Generating README File');
-        $this->call('apiato:generate:readme', [
+        $this->call('mp:g:readme', [
+            '--core' => $this->core,
+'--module' => $moduleName,
             '--section' => $sectionName,
             '--container' => $containerName,
             '--file' => 'README',
@@ -74,7 +76,9 @@ class ContainerWebGenerator extends GeneratorCommand implements ComponentsGenera
 
         // create the configuration file
         $this->printInfoMessage('Generating Configuration File');
-        $this->call('apiato:generate:configuration', [
+        $this->call('mp:g:configuration', [
+            '--core' => $this->core,
+'--module' => $moduleName,
             '--section' => $sectionName,
             '--container' => $containerName,
             '--file' => Str::camel($this->sectionName) . '-' . Str::camel($this->containerName),
@@ -82,7 +86,9 @@ class ContainerWebGenerator extends GeneratorCommand implements ComponentsGenera
 
         // create the MainServiceProvider for the container
         $this->printInfoMessage('Generating MainServiceProvider');
-        $this->call('apiato:generate:provider', [
+        $this->call('mp:g:provider', [
+            '--core' => $this->core,
+'--module' => $moduleName,
             '--section' => $sectionName,
             '--container' => $containerName,
             '--file' => 'MainServiceProvider',
@@ -91,7 +97,9 @@ class ContainerWebGenerator extends GeneratorCommand implements ComponentsGenera
 
         // create the model and repository for this container
         $this->printInfoMessage('Generating Model and Repository');
-        $this->call('apiato:generate:model', [
+        $this->call('mp:g:model', [
+            '--core' => $this->core,
+'--module' => $moduleName,
             '--section' => $sectionName,
             '--container' => $containerName,
             '--file' => $model,
@@ -100,7 +108,9 @@ class ContainerWebGenerator extends GeneratorCommand implements ComponentsGenera
 
         // create the migration file for the model
         $this->printInfoMessage('Generating a basic Migration file');
-        $this->call('apiato:generate:migration', [
+        $this->call('mp:g:migration', [
+            '--core' => $this->core,
+'--module' => $moduleName,
             '--section' => $sectionName,
             '--container' => $containerName,
             '--file' => 'create_' . Str::snake($models) . '_table',
@@ -204,7 +214,9 @@ class ContainerWebGenerator extends GeneratorCommand implements ComponentsGenera
         ];
 
         foreach ($routes as $route) {
-            $this->call('apiato:generate:request', [
+            $this->call('mp:g:request', [
+                '--core' => $this->core,
+'--module' => $moduleName,
                 '--section' => $sectionName,
                 '--container' => $containerName,
                 '--file' => $route['request'],
@@ -213,9 +225,11 @@ class ContainerWebGenerator extends GeneratorCommand implements ComponentsGenera
             ]);
 
             if ($route['action'] != null) {
-                $this->call('apiato:generate:action', [
-                    '--section' => $sectionName,
-                    '--container' => $containerName,
+                $this->call('mp:g:action', [
+                '--core' => $this->core,
+'--module' => $moduleName,
+                '--section' => $sectionName,
+                '--container' => $containerName,
                     '--file' => $route['action'],
                     '--ui' => $ui,
                     '--model' => $model,
@@ -224,9 +238,11 @@ class ContainerWebGenerator extends GeneratorCommand implements ComponentsGenera
             }
 
             if ($route['task'] != null) {
-                $this->call('apiato:generate:task', [
-                    '--section' => $sectionName,
-                    '--container' => $containerName,
+                $this->call('mp:g:task', [
+                '--core' => $this->core,
+'--module' => $moduleName,
+                '--section' => $sectionName,
+                '--container' => $containerName,
                     '--file' => $route['task'],
                     '--model' => $model,
                     '--stub' => $route['stub'],
@@ -234,9 +250,11 @@ class ContainerWebGenerator extends GeneratorCommand implements ComponentsGenera
             }
 
             if ($controllertype === 'sac') {
-                $this->call('apiato:generate:route', [
-                    '--section' => $sectionName,
-                    '--container' => $containerName,
+                $this->call('mp:g:route', [
+                '--core' => $this->core,
+'--module' => $moduleName,
+                '--section' => $sectionName,
+                '--container' => $containerName,
                     '--file' => $route['name'],
                     '--ui' => $ui,
                     '--operation' => $route['operation'],
@@ -247,17 +265,21 @@ class ContainerWebGenerator extends GeneratorCommand implements ComponentsGenera
                     '--controller' => $route['controller'],
                 ]);
 
-                $this->call('apiato:generate:controller', [
-                    '--section' => $sectionName,
-                    '--container' => $containerName,
+                $this->call('mp:g:controller', [
+                '--core' => $this->core,
+'--module' => $moduleName,
+                '--section' => $sectionName,
+                '--container' => $containerName,
                     '--file' => $route['controller'],
                     '--ui' => $ui,
                     '--stub' => $route['stub'],
                 ]);
             } else {
-                $this->call('apiato:generate:route', [
-                    '--section' => $sectionName,
-                    '--container' => $containerName,
+                $this->call('mp:g:route', [
+                '--core' => $this->core,
+'--module' => $moduleName,
+                '--section' => $sectionName,
+                '--container' => $containerName,
                     '--file' => $route['name'],
                     '--ui' => $ui,
                     '--operation' => $route['operation'],
@@ -272,7 +294,9 @@ class ContainerWebGenerator extends GeneratorCommand implements ComponentsGenera
 
         if ($controllertype === 'mac') {
             $this->printInfoMessage('Generating Controller to wire everything together');
-            $this->call('apiato:generate:controller', [
+            $this->call('mp:g:controller', [
+                '--core' => $this->core,
+'--module' => $moduleName,
                 '--section' => $sectionName,
                 '--container' => $containerName,
                 '--file' => 'Controller',
@@ -284,10 +308,13 @@ class ContainerWebGenerator extends GeneratorCommand implements ComponentsGenera
 
         $generateComposerFile = [
             'path-parameters' => [
+                'module-name' => $this->moduleName,
                 'section-name' => $this->sectionName,
                 'container-name' => $this->containerName,
             ],
             'stub-parameters' => [
+                '_module-name' => $_moduleName,
+                'module-name' => $this->moduleName,
                 '_section-name' => $_sectionName,
                 'section-name' => $this->sectionName,
                 '_container-name' => $_containerName,
@@ -303,7 +330,7 @@ class ContainerWebGenerator extends GeneratorCommand implements ComponentsGenera
             $this->printInfoMessage('Generating Composer File');
             return $generateComposerFile;
         }
-        
+
         return null;
     }
 
@@ -315,7 +342,7 @@ class ContainerWebGenerator extends GeneratorCommand implements ComponentsGenera
         return 'composer';
     }
 
-    public function getDefaultFileExtension(): string
+    public function getDefaultFileExtension($ext = 'php'): string
     {
         return 'json';
     }

@@ -21,7 +21,7 @@ class ConfigurationGenerator extends GeneratorCommand implements ComponentsGener
      *
      * @var string
      */
-    protected $name = 'apiato:generate:configuration';
+    protected $name = 'mp:g:configuration';
     /**
      * The console command description.
      *
@@ -35,7 +35,7 @@ class ConfigurationGenerator extends GeneratorCommand implements ComponentsGener
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{section-name}/{container-name}/Configs/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/Configs/*';
     /**
      * The structure of the file name.
      */
@@ -49,10 +49,13 @@ class ConfigurationGenerator extends GeneratorCommand implements ComponentsGener
     {
         return [
             'path-parameters' => [
+                'module-name' => $this->moduleName,
                 'section-name' => $this->sectionName,
                 'container-name' => $this->containerName,
             ],
             'stub-parameters' => [
+                '_module-name' => Str::lower($this->moduleName),
+                'module-name' => $this->moduleName,
                 '_section-name' => Str::lower($this->sectionName),
                 'section-name' => $this->sectionName,
                 '_container-name' => Str::lower($this->containerName),

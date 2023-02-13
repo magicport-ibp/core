@@ -21,7 +21,7 @@ class ContainerGenerator extends GeneratorCommand implements ComponentsGenerator
      *
      * @var string
      */
-    protected $name = 'apiato:generate:container';
+    protected $name = 'mp:g:container';
     /**
      * The console command description.
      *
@@ -39,7 +39,7 @@ class ContainerGenerator extends GeneratorCommand implements ComponentsGenerator
      *
      * @var  string
      */
-    protected string $pathStructure = '{section-name}/{container-name}/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/*';
     /**
      * The structure of the file name.
      *
@@ -58,6 +58,10 @@ class ContainerGenerator extends GeneratorCommand implements ComponentsGenerator
         $ui = Str::lower($this->checkParameterOrChoice('ui', 'Select the UI for this container', ['API', 'WEB', 'BOTH'], 0));
 
         // container name as inputted and lower
+        $moduleName = $this->moduleName;
+        $_moduleName = Str::lower($this->moduleName);
+
+        // container name as inputted and lower
         $sectionName = $this->sectionName;
         $_sectionName = Str::lower($this->sectionName);
 
@@ -66,7 +70,8 @@ class ContainerGenerator extends GeneratorCommand implements ComponentsGenerator
         $_containerName = Str::lower($this->containerName);
 
         if ($ui === 'api' || $ui === 'both') {
-            $this->call('apiato:generate:container:api', [
+            $this->call('mp:g:api', [
+                '--module'  => $moduleName,
                 '--section' => $sectionName,
                 '--container' => $containerName,
                 '--file' => 'composer',
@@ -75,7 +80,8 @@ class ContainerGenerator extends GeneratorCommand implements ComponentsGenerator
         }
 
         if ($ui === 'web' || $ui === 'both') {
-            $this->call('apiato:generate:container:web', [
+            $this->call('mp:g:web', [
+                '--module'  => $moduleName,
                 '--section' => $sectionName,
                 '--container' => $containerName,
                 '--file' => 'composer',
@@ -86,10 +92,13 @@ class ContainerGenerator extends GeneratorCommand implements ComponentsGenerator
         $this->printInfoMessage('Generating Composer File');
         return [
             'path-parameters' => [
+                'module-name' => $this->moduleName,
                 'section-name' => $this->sectionName,
                 'container-name' => $this->containerName,
             ],
             'stub-parameters' => [
+                '_module-name' => $_moduleName,
+                'module-name' => $this->moduleName,
                 '_section-name' => $_sectionName,
                 'section-name' => $this->sectionName,
                 '_container-name' => $_containerName,
@@ -110,7 +119,7 @@ class ContainerGenerator extends GeneratorCommand implements ComponentsGenerator
         return 'composer';
     }
 
-    public function getDefaultFileExtension(): string
+    public function getDefaultFileExtension($ext = 'php'): string
     {
         return 'json';
     }

@@ -23,7 +23,7 @@ class ServiceProviderGenerator extends GeneratorCommand implements ComponentsGen
      *
      * @var string
      */
-    protected $name = 'apiato:generate:provider';
+    protected $name = 'mp:g:provider';
     /**
      * The console command description.
      *
@@ -37,7 +37,7 @@ class ServiceProviderGenerator extends GeneratorCommand implements ComponentsGen
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{section-name}/{container-name}/Providers/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/Providers/*';
     /**
      * The structure of the file name.
      */
@@ -63,10 +63,13 @@ class ServiceProviderGenerator extends GeneratorCommand implements ComponentsGen
 
         return [
             'path-parameters' => [
+                'module-name' => $this->moduleName,
                 'section-name' => $this->sectionName,
                 'container-name' => $this->containerName,
             ],
             'stub-parameters' => [
+                '_module-name' => Str::lower($this->moduleName),
+                'module-name' => $this->moduleName,
                 '_section-name' => Str::lower($this->sectionName),
                 'section-name' => $this->sectionName,
                 '_container-name' => Str::lower($this->containerName),

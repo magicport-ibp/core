@@ -20,13 +20,14 @@ class ActionGenerator extends GeneratorCommand implements ComponentsGenerator
         ['model', null, InputOption::VALUE_OPTIONAL, 'The model this action is for.'],
         ['stub', null, InputOption::VALUE_OPTIONAL, 'The stub file to load for this generator.'],
         ['ui', null, InputOption::VALUE_OPTIONAL, 'The user-interface to generate the Action for.'],
+   
     ];
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'apiato:generate:action';
+    protected $name = 'mp:g:action';
     /**
      * The console command description.
      *
@@ -40,7 +41,7 @@ class ActionGenerator extends GeneratorCommand implements ComponentsGenerator
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{section-name}/{container-name}/Actions/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/Actions/*';
     /**
      * The structure of the file name.
      */
@@ -70,10 +71,13 @@ class ActionGenerator extends GeneratorCommand implements ComponentsGenerator
 
         return [
             'path-parameters' => [
+                'module-name' => $this->moduleName,
                 'section-name' => $this->sectionName,
                 'container-name' => $this->containerName,
             ],
             'stub-parameters' => [
+                '_module-name' => Str::lower($this->moduleName),
+                'module-name' => $this->moduleName,
                 '_section-name' => Str::lower($this->sectionName),
                 'section-name' => $this->sectionName,
                 '_container-name' => Str::lower($this->containerName),
@@ -82,6 +86,8 @@ class ActionGenerator extends GeneratorCommand implements ComponentsGenerator
                 'model' => $model,
                 'models' => $models,
                 'ui' => $ui,
+
+                'file-name' => $this->option('file-name'),
             ],
             'file-parameters' => [
                 'file-name' => $this->fileName,

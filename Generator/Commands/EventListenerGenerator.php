@@ -22,7 +22,7 @@ class EventListenerGenerator extends GeneratorCommand implements ComponentsGener
      *
      * @var string
      */
-    protected $name = 'apiato:generate:listener';
+    protected $name = 'mp:g:listener';
     /**
      * The console command description.
      *
@@ -36,7 +36,7 @@ class EventListenerGenerator extends GeneratorCommand implements ComponentsGener
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{section-name}/{container-name}/Listeners/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/Listeners/*';
     /**
      * The structure of the file name.
      */
@@ -54,10 +54,12 @@ class EventListenerGenerator extends GeneratorCommand implements ComponentsGener
 
         return [
             'path-parameters' => [
+                'module-name' => $this->moduleName,
                 'section-name' => $this->sectionName,
                 'container-name' => $this->containerName,
             ],
             'stub-parameters' => [
+                'module-name' => $this->moduleName,
                 'section-name' => $this->sectionName,
                 'container-name' => $this->containerName,
                 'class-name' => $this->fileName,

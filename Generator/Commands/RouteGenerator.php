@@ -16,20 +16,20 @@ class RouteGenerator extends GeneratorCommand implements ComponentsGenerator
      * @var  array
      */
     public array $inputs = [
-        ['ui', null, InputOption::VALUE_OPTIONAL, 'The user-interface to generate the Controller for.'],
-        ['operation', null, InputOption::VALUE_OPTIONAL, 'The operation from the Controller to be called (e.g., index)'],
-        ['doctype', null, InputOption::VALUE_OPTIONAL, 'The type of the endpoint (private, public)'],
-        ['docversion', null, InputOption::VALUE_OPTIONAL, 'The version of the endpoint (1, 2, ...)'],
-        ['url', null, InputOption::VALUE_OPTIONAL, 'The URL of the endpoint (/stores, /cars, ...)'],
-        ['verb', null, InputOption::VALUE_OPTIONAL, 'The HTTP verb of the endpoint (GET, POST, ...)'],
-        ['controller', null, InputOption::VALUE_OPTIONAL, 'The controller used in this route'],
+        [ 'ui' , null , InputOption::VALUE_OPTIONAL , 'The user-interface to generate the Controller for.' ] ,
+        [ 'operation' , null , InputOption::VALUE_OPTIONAL , 'The operation from the Controller to be called (e.g., index)' ] ,
+        [ 'doctype' , null , InputOption::VALUE_OPTIONAL , 'The type of the endpoint (private, public)' ] ,
+        [ 'docversion' , null , InputOption::VALUE_OPTIONAL , 'The version of the endpoint (1, 2, ...)' ] ,
+        [ 'url' , null , InputOption::VALUE_OPTIONAL , 'The URL of the endpoint (/stores, /cars, ...)' ] ,
+        [ 'verb' , null , InputOption::VALUE_OPTIONAL , 'The HTTP verb of the endpoint (GET, POST, ...)' ] ,
+        [ 'controller' , null , InputOption::VALUE_OPTIONAL , 'The controller used in this route' ] ,
     ];
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'apiato:generate:route';
+    protected $name = 'mp:g:route';
     /**
      * The console command description.
      *
@@ -43,7 +43,7 @@ class RouteGenerator extends GeneratorCommand implements ComponentsGenerator
     /**
      * The structure of the file path.
      */
-    protected string $pathStructure = '{section-name}/{container-name}/UI/{user-interface}/Routes/*';
+    protected string $pathStructure = '{module-name}/{section-name}/{container-name}/UI/{user-interface}/Routes/*';
     /**
      * The structure of the file name.
      */
@@ -55,18 +55,20 @@ class RouteGenerator extends GeneratorCommand implements ComponentsGenerator
 
     public function getUserInputs(): ?array
     {
-        $ui = Str::lower($this->checkParameterOrChoice('ui', 'Select the UI for the controller', ['API', 'WEB'], 0));
-        $version = $this->checkParameterOrAsk('docversion', 'Enter the endpoint version (integer)', 1);
-        $doctype = $this->checkParameterOrChoice('doctype', 'Select the type for this endpoint', ['private', 'public'], 0);
-        $operation = $this->checkParameterOrAsk('operation', 'Enter the name of the controller function that needs to be invoked when calling this endpoint');
-        $verb = Str::upper($this->checkParameterOrAsk('verb', 'Enter the HTTP verb of this endpoint (GET, POST,...)'));
+        $ui = Str::lower($this->checkParameterOrChoice('ui' , 'Select the UI for the controller' , [ 'API' , 'WEB' ] , 0));
+        $version = $this->checkParameterOrAsk('docversion' , 'Enter the endpoint version (integer)' , 1);
+//        $doctype = $this->checkParameterOrChoice('doctype', 'Select the type for this endpoint', ['private', 'public'], 0);
+        $doctype = $this->checkParameterOrAsk('doctype' , 'Select the type for all API endpoints' , Str::lower($this->moduleName));
+
+        $operation = $this->checkParameterOrAsk('operation' , 'Enter the name of the controller function that needs to be invoked when calling this endpoint');
+        $verb = Str::upper($this->checkParameterOrAsk('verb' , 'Enter the HTTP verb of this endpoint (GET, POST,...)'));
         // Get the URI and remove the first trailing slash
-        $url = Str::lower($this->checkParameterOrAsk('url', 'Enter the endpoint URI (foo/bar/{id})'));
-        $url = ltrim($url, '/');
+        $url = Str::lower($this->checkParameterOrAsk('url' , 'Enter the endpoint URI (foo/bar/{id})'));
+        $url = ltrim($url , '/');
 
-        $controllerName = $this->checkParameterOrAsk('controller', 'Enter the controller name', Str::studly($operation) . 'Controller');
+        $controllerName = $this->checkParameterOrAsk('controller' , 'Enter the controller name' , Str::studly($operation) . 'Controller');
 
-        $docUrl = preg_replace('~{(.+?)}~', ':$1', $url);
+        $docUrl = preg_replace('~{(.+?)}~' , ':$1' , $url);
 
         $routeName = Str::lower($ui . '_' . $this->containerName . '_' . Str::snake($operation));
 
@@ -75,33 +77,36 @@ class RouteGenerator extends GeneratorCommand implements ComponentsGenerator
 
         return [
             'path-parameters' => [
-                'section-name' => $this->sectionName,
-                'container-name' => $this->containerName,
-                'user-interface' => Str::upper($ui),
-            ],
+                'module-name'    => $this->moduleName ,
+                'section-name'   => $this->sectionName ,
+                'container-name' => $this->containerName ,
+                'user-interface' => Str::upper($ui) ,
+            ] ,
             'stub-parameters' => [
-                '_section-name' => Str::lower($this->sectionName),
-                'section-name' => $this->sectionName,
-                '_container-name' => Str::lower($this->containerName),
-                'container-name' => $this->containerName,
-                'operation' => $operation,
-                'doc-api-name' => Str::studly($operation),
-                'user-interface' => Str::upper($ui),
-                'endpoint-url' => $url,
-                'endpoint-title' => Str::headline($operation),
-                'doc-endpoint-url' => '/v' . $version . '/' . $docUrl,
-                'endpoint-version' => $version,
-                'http-verb' => Str::lower($verb),
-                'doc-http-verb' => Str::upper($verb),
-                'route-name' => $routeName,
-                'auth-middleware' => Str::lower($ui),
-                'controller-name' => $controllerName,
-            ],
+                '_module-name'     => Str::lower($this->moduleName) ,
+                'module-name'      => $this->moduleName ,
+                '_section-name'    => Str::lower($this->sectionName) ,
+                'section-name'     => $this->sectionName ,
+                '_container-name'  => Str::lower($this->containerName) ,
+                'container-name'   => $this->containerName ,
+                'operation'        => $operation ,
+                'doc-api-name'     => Str::studly($operation) ,
+                'user-interface'   => Str::upper($ui) ,
+                'endpoint-url'     => $url ,
+                'endpoint-title'   => Str::headline($operation) ,
+                'doc-endpoint-url' => '/v' . $version . '/' . $docUrl ,
+                'endpoint-version' => $version ,
+                'http-verb'        => Str::lower($verb) ,
+                'doc-http-verb'    => Str::upper($verb) ,
+                'route-name'       => $routeName ,
+                'auth-middleware'  => Str::lower($ui) ,
+                'controller-name'  => $controllerName ,
+            ] ,
             'file-parameters' => [
-                'endpoint-name' => $this->fileName,
-                'endpoint-version' => 'v' . $version,
-                'documentation-type' => $doctype,
-            ],
+                'endpoint-name'      => $this->fileName ,
+                'endpoint-version'   => 'v' . $version ,
+                'documentation-type' => $doctype ,
+            ] ,
         ];
     }
 }
