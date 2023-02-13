@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Mails;
 
-use App\Containers\AppSection\User\Models\User;
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Mails;
+
+use App\Skeleton\AppSection\User\Models\User;
 use App\MagicPort\Ship\Parents\Mails\Mail as ParentMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

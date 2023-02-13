@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Policies;
+
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Policies;
 
 use App\MagicPort\Ship\Parents\Policies\Policy as ParentPolicy;
 use Illuminate\Auth\Access\HandlesAuthorization;

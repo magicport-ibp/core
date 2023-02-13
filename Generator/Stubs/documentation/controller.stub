@@ -1,0 +1,16 @@
+<?php
+
+namespace {{module-name}}\Documentation\UI\WEB\Controllers;
+
+use {{module-name}}\Documentation\UI\WEB\Requests\DocumentationRequest;
+use App\MagicPort\Ship\Parents\Controllers\WebController;
+use Illuminate\Http\Response;
+
+class DocumentationController extends WebController
+{
+
+    public function __invoke(DocumentationRequest $request): Response
+    {
+        return  response()->view('modules@{{camel-module-name}}::index');
+    }
+}

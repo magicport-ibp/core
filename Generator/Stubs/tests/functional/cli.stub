@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\UI\CLI\Tests\Functional;
 
-use App\Containers\{{section-name}}\{{container-name}}\UI\CLI\Tests\CliTestCase;
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\UI\CLI\Tests\Functional;
+
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\CLI\Tests\CliTestCase;
 
 /**
  * Class {{class-name}}.

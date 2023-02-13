@@ -1,12 +1,22 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Models;
+
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Models;
 
 use App\MagicPort\Ship\Parents\Models\Model as ParentModel;
+use App\MagicPort\Ship\Traits\GetNameSpaceTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class {{class-name}} extends ParentModel
 {
-    protected $fillable = [
+    use SoftDeletes;
+    use GetNameSpaceTrait;
+
+    protected $table = '' ;
+
+
+    protected $guarded = [
 
     ];
 
@@ -21,5 +31,5 @@ class {{class-name}} extends ParentModel
     /**
      * A resource key to be used in the serialized responses.
      */
-    protected string $resourceKey = '{{resource-key}}';
+    protected string $resourceKey = '{{section-name}}-{{resource-key}}';
 }

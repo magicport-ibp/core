@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Data\Seeders;
+
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Data\Seeders;
 
 use App\MagicPort\Ship\Parents\Seeders\Seeder as ParentSeeder;
 

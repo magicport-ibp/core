@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Tasks;
+
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Tasks;
 
 use App\MagicPort\Ship\Parents\Tasks\Task as ParentTask;
 

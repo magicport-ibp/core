@@ -1,0 +1,22 @@
+<?php
+
+
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Actions;
+
+use {{module-name}}\{{section-name}}\{{container-name}}\Tasks\{{file-name}}Task;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{ui}}\Requests\{{file-name}}Request;
+use App\MagicPort\Ship\Parents\Actions\Action as ParentAction;
+
+class {{class-name}} extends ParentAction
+{
+    public function run({{file-name}}Request $request)
+    {
+         $data = $request->sanitizeInput([
+                ...$request->validated() ,
+                 ]);
+
+         return app({{file-name}}Task::class)->run();
+
+    }
+}

@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Actions;
 
-use App\Containers\{{section-name}}\{{container-name}}\Tasks\Delete{{model}}Task;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{ui}}\Requests\Delete{{model}}Request;
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Actions;
+
+use {{module-name}}\{{section-name}}\{{container-name}}\Tasks\Delete{{model}}Task;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{ui}}\Requests\Delete{{model}}Request;
 use App\MagicPort\Ship\Exceptions\DeleteResourceFailedException;
 use App\MagicPort\Ship\Exceptions\NotFoundException;
 use App\MagicPort\Ship\Parents\Actions\Action as ParentAction;

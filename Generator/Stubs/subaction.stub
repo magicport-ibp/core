@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Actions;
+
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Actions;
 
 use App\MagicPort\Ship\Parents\Actions\SubAction as ParentSubAction;
 

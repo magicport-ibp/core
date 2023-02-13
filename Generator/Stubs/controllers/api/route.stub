@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @productOfMagicPort
+ * @copyright All rights reserved ©  2023.
+ **/
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Controllers;
+
+use Apiato\Core\Exceptions\InvalidTransformerException;
+use {{module-name}}\{{section-name}}\{{container-name}}\Actions\{{file-name}}Action;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\{{file-name}}Request;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Transformers\{{model}}Transformer;
+use App\MagicPort\Ship\Parents\Controllers\{{base-controller}};
+
+class {{class-name}} extends {{base-controller}}
+{
+
+    public function {{method-name}}({{file-name}}Request $request): array
+    {
+        ${{entity}} = app({{file-name}}Action::class)->run($request);
+
+        return $this->transform(${{entity}}, {{model}}Transformer::class);
+    }
+}

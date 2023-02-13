@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Controllers;
+
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Controllers;
 
 use Apiato\Core\Exceptions\InvalidTransformerException;
-use App\Containers\{{section-name}}\{{container-name}}\Actions\Find{{model}}ByIdAction;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Find{{model}}ByIdRequest;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Transformers\{{model}}Transformer;
+use {{module-name}}\{{section-name}}\{{container-name}}\Actions\Find{{model}}ByIdAction;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Find{{model}}ByIdRequest;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Transformers\{{model}}Transformer;
 use App\MagicPort\Ship\Exceptions\NotFoundException;
 use App\MagicPort\Ship\Parents\Controllers\{{base-controller}};
 

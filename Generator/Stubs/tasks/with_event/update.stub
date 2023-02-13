@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Tasks;
 
-use App\Containers\{{section-name}}\{{container-name}}\Data\Repositories\{{model}}Repository;
-use App\Containers\{{section-name}}\{{container-name}}\Events\{{event}};
-use App\Containers\{{section-name}}\{{container-name}}\Models\{{model}};
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Tasks;
+
+use {{module-name}}\{{section-name}}\{{container-name}}\Data\Repositories\{{model}}Repository;
+use {{module-name}}\{{section-name}}\{{container-name}}\Events\{{event}};
+use {{module-name}}\{{section-name}}\{{container-name}}\Models\{{model}};
 use App\MagicPort\Ship\Exceptions\NotFoundException;
 use App\MagicPort\Ship\Exceptions\UpdateResourceFailedException;
 use App\MagicPort\Ship\Parents\Tasks\Task as ParentTask;
@@ -24,15 +26,11 @@ class {{class-name}} extends ParentTask
      */
     public function run(array $data, $id): {{model}}
     {
-        try {
+
             ${{_model}} = $this->repository->update($data, $id);
-            {{event}}::dispatch(${{_model}});
+            //{{event}}::dispatch(${{_model}});
 
             return ${{_model}};
-        } catch (ModelNotFoundException) {
-            throw new NotFoundException();
-        } catch (Exception) {
-            throw new UpdateResourceFailedException();
-        }
+
     }
 }

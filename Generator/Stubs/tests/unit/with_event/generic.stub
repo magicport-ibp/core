@@ -1,0 +1,29 @@
+<?php
+
+
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Tests\Unit;
+
+use {{module-name}}\{{section-name}}\{{container-name}}\Events\{{event}};
+use {{module-name}}\{{section-name}}\{{container-name}}\Models\{{model}};
+use {{module-name}}\{{section-name}}\{{container-name}}\Tasks\GetAll{{models}}Task;
+use {{module-name}}\{{section-name}}\{{container-name}}\Tests\TestCase;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Event;
+
+/**
+ * Class {{class-name}}.
+ *
+ * @group {{_container-name}}
+ * @group unit
+ */
+class {{class-name}} extends TestCase
+{
+    public function testGetAll{{models}}(): void
+    {
+        Event::fake();
+
+
+        Event::assertDispatched({{event}}::class);
+    }
+}

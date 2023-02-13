@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Controllers;
 
-use App\Containers\{{section-name}}\{{container-name}}\Actions\Delete{{model}}Action;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Delete{{model}}Request;
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Controllers;
+
+use {{module-name}}\{{section-name}}\{{container-name}}\Actions\Delete{{model}}Action;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Delete{{model}}Request;
 use App\MagicPort\Ship\Exceptions\DeleteResourceFailedException;
 use App\MagicPort\Ship\Exceptions\NotFoundException;
 use App\MagicPort\Ship\Parents\Controllers\{{base-controller}};
@@ -21,6 +23,7 @@ class {{class-name}} extends {{base-controller}}
     {
         app(Delete{{model}}Action::class)->run($request);
 
-        return $this->noContent();
+        return $this->deleted(__('{{__module-name}}::{{__translation-name}}.deleted'));
+
     }
 }

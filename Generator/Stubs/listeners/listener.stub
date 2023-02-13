@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Listeners;
 
-use App\Containers\{{section-name}}\{{container-name}}\Events\{{model}};
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Listeners;
+
+use {{module-name}}\{{section-name}}\{{container-name}}\Events\{{model}};
 use App\MagicPort\Ship\Parents\Listeners\Listener as ParentListener;
 use Illuminate\Contracts\Queue\ShouldQueue;
 

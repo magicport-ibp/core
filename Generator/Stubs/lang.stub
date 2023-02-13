@@ -1,0 +1,18 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | {{module-name}} Module {{container-name}} Container
+    | For call  use: __('{{_module-name}}::{{file-name}}.key');
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'created' => 'Successfully Created',
+    'updated' => 'Successfully Updated',
+    'deleted' => 'Successfully Deleted',
+
+
+];

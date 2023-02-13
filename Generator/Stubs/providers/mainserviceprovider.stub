@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Providers;
+
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Providers;
 
 use App\MagicPort\Ship\Parents\Providers\MainServiceProvider as ParentMainServiceProvider;
 

@@ -1,0 +1,14 @@
+<?php
+
+return [
+    'types' => [
+        '{{_module-name}}' => [
+            'url'          => env('PUBLIC_DOCS_URL' , 'docs/{{_module-name}}') ,
+            'section'      => '{{__module-name}}' ,
+            'routes'       => [
+                '{{_module-name}}' ,
+            ] ,
+        ] ,
+
+    ],
+];

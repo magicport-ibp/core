@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Controllers;
+
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Controllers;
 
 use Apiato\Core\Exceptions\IncorrectIdException;
 use Apiato\Core\Exceptions\InvalidTransformerException;
-use App\Containers\{{section-name}}\{{container-name}}\Actions\Update{{model}}Action;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Update{{model}}Request;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Transformers\{{model}}Transformer;
+use {{module-name}}\{{section-name}}\{{container-name}}\Actions\Update{{model}}Action;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Update{{model}}Request;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Transformers\{{model}}Transformer;
 use App\MagicPort\Ship\Exceptions\NotFoundException;
 use App\MagicPort\Ship\Exceptions\UpdateResourceFailedException;
 use App\MagicPort\Ship\Parents\Controllers\{{base-controller}};
@@ -25,6 +27,7 @@ class {{class-name}} extends {{base-controller}}
     {
         ${{entity}} = app(Update{{model}}Action::class)->run($request);
 
-        return $this->transform(${{entity}}, {{model}}Transformer::class);
+        return $this->updated($this->transform(${{entity}}, {{model}}Transformer::class),
+               alert: __('{{__module-name}}::{{__translation-name}}.updated'));
     }
 }

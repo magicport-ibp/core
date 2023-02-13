@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Tasks;
+
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Tasks;
 
 use Apiato\Core\Exceptions\CoreInternalErrorException;
-use App\Containers\{{section-name}}\{{container-name}}\Data\Repositories\{{model}}Repository;
+use {{module-name}}\{{section-name}}\{{container-name}}\Data\Repositories\{{model}}Repository;
 use App\MagicPort\Ship\Parents\Tasks\Task as ParentTask;
 use Prettus\Repository\Exceptions\RepositoryException;
 
@@ -20,6 +22,9 @@ class {{class-name}} extends ParentTask
      */
     public function run(): mixed
     {
-        return $this->addRequestCriteria()->repository->paginate();
+        return $this
+        ->addRequestCriteria()
+        ->repository
+        ->paginate();
     }
 }

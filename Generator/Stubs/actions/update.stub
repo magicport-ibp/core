@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Actions;
+
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Actions;
 
 use Apiato\Core\Exceptions\IncorrectIdException;
-use App\Containers\{{section-name}}\{{container-name}}\Models\{{model}};
-use App\Containers\{{section-name}}\{{container-name}}\Tasks\Update{{model}}Task;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{ui}}\Requests\Update{{model}}Request;
+use {{module-name}}\{{section-name}}\{{container-name}}\Models\{{model}};
+use {{module-name}}\{{section-name}}\{{container-name}}\Tasks\Update{{model}}Task;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{ui}}\Requests\Update{{model}}Request;
 use App\MagicPort\Ship\Exceptions\NotFoundException;
 use App\MagicPort\Ship\Exceptions\UpdateResourceFailedException;
 use App\MagicPort\Ship\Parents\Actions\Action as ParentAction;
@@ -21,9 +23,9 @@ class {{class-name}} extends ParentAction
      */
     public function run(Update{{model}}Request $request): {{model}}
     {
-        $data = $request->sanitizeInput([
-            // add your request data here
-        ]);
+         $data = $request->sanitizeInput([
+            ...$request->validated() ,
+            ]);
 
         return app(Update{{model}}Task::class)->run($data, $request->id);
     }

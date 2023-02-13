@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Data\Repositories;
+
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Data\Repositories;
 
 use App\MagicPort\Ship\Parents\Repositories\Repository as ParentRepository;
 

@@ -1,0 +1,9 @@
+<?php
+
+use {{module-name}}\Documentation\UI\WEB\Controllers\DocumentationController as Controller ;
+use Illuminate\Support\Facades\Route;
+
+
+
+Route::get('docs/{{kebab-module-name}}', [Controller::class,'__invoke']);
+

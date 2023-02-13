@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Actions;
+
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Actions;
 
 use Apiato\Core\Exceptions\CoreInternalErrorException;
-use App\Containers\{{section-name}}\{{container-name}}\Tasks\GetAll{{models}}Task;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{ui}}\Requests\GetAll{{models}}Request;
+use {{module-name}}\{{section-name}}\{{container-name}}\Tasks\GetAll{{models}}Task;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{ui}}\Requests\GetAll{{models}}Request;
 use App\MagicPort\Ship\Parents\Actions\Action as ParentAction;
 use Prettus\Repository\Exceptions\RepositoryException;
 

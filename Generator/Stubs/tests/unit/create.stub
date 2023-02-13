@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Tests\Unit;
 
-use App\Containers\{{section-name}}\{{container-name}}\Tasks\Create{{model}}Task;
-use App\Containers\{{section-name}}\{{container-name}}\Tests\TestCase;
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Tests\Unit;
+
+use {{module-name}}\{{section-name}}\{{container-name}}\Tasks\Create{{model}}Task;
+use {{module-name}}\{{section-name}}\{{container-name}}\Tests\TestCase;
 use App\MagicPort\Ship\Exceptions\CreateResourceFailedException;
 
 /**

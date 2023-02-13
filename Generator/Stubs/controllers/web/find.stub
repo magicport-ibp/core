@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Controllers;
 
-use App\Containers\{{section-name}}\{{container-name}}\Actions\Find{{model}}ByIdAction;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Find{{model}}ByIdRequest;
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Controllers;
+
+use {{module-name}}\{{section-name}}\{{container-name}}\Actions\Find{{model}}ByIdAction;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Find{{model}}ByIdRequest;
 use App\MagicPort\Ship\Parents\Controllers\WebController;
 
 class {{class-name}} extends WebController

@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Notifications;
+
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Notifications;
 
 use App\MagicPort\Ship\Parents\Notifications\Notification as ParentNotification;
 

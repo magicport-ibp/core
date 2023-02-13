@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Tasks;
 
-use App\Containers\{{section-name}}\{{container-name}}\Data\Repositories\{{model}}Repository;
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Tasks;
+
+use {{module-name}}\{{section-name}}\{{container-name}}\Data\Repositories\{{model}}Repository;
 use App\MagicPort\Ship\Exceptions\DeleteResourceFailedException;
 use App\MagicPort\Ship\Exceptions\NotFoundException;
 use App\MagicPort\Ship\Parents\Tasks\Task as ParentTask;
@@ -22,12 +24,8 @@ class {{class-name}} extends ParentTask
      */
     public function run($id): int
     {
-        try {
+
             return $this->repository->delete($id);
-        } catch (ModelNotFoundException) {
-            throw new NotFoundException();
-        } catch (Exception) {
-            throw new DeleteResourceFailedException();
-        }
+
     }
 }

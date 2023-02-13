@@ -1,20 +1,22 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Controllers;
+
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Controllers;
 
 use Apiato\Core\Exceptions\CoreInternalErrorException;
 use Apiato\Core\Exceptions\InvalidTransformerException;
-use App\Containers\{{section-name}}\{{container-name}}\Actions\Create{{model}}Action;
-use App\Containers\{{section-name}}\{{container-name}}\Actions\Delete{{model}}Action;
-use App\Containers\{{section-name}}\{{container-name}}\Actions\Find{{model}}ByIdAction;
-use App\Containers\{{section-name}}\{{container-name}}\Actions\GetAll{{models}}Action;
-use App\Containers\{{section-name}}\{{container-name}}\Actions\Update{{model}}Action;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Create{{model}}Request;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Delete{{model}}Request;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Find{{model}}ByIdRequest;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\GetAll{{models}}Request;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Update{{model}}Request;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Transformers\{{model}}Transformer;
+use {{module-name}}\{{section-name}}\{{container-name}}\Actions\Create{{model}}Action;
+use {{module-name}}\{{section-name}}\{{container-name}}\Actions\Delete{{model}}Action;
+use {{module-name}}\{{section-name}}\{{container-name}}\Actions\Find{{model}}ByIdAction;
+use {{module-name}}\{{section-name}}\{{container-name}}\Actions\GetAll{{models}}Action;
+use {{module-name}}\{{section-name}}\{{container-name}}\Actions\Update{{model}}Action;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Create{{model}}Request;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Delete{{model}}Request;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Find{{model}}ByIdRequest;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\GetAll{{models}}Request;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Update{{model}}Request;
+use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Transformers\{{model}}Transformer;
 use App\MagicPort\Ship\Exceptions\CreateResourceFailedException;
 use App\MagicPort\Ship\Exceptions\DeleteResourceFailedException;
 use App\MagicPort\Ship\Exceptions\NotFoundException;
@@ -35,7 +37,8 @@ class {{class-name}} extends {{base-controller}}
     {
         ${{entity}} = app(Create{{model}}Action::class)->run($request);
 
-        return $this->created($this->transform(${{entity}}, {{model}}Transformer::class));
+        return $this->created($this->transform(${{entity}}, {{model}}Transformer::class),
+               alert: __('{{__module-name}}::{{__translation-name}}.created'));
     }
 
     /**
@@ -71,11 +74,12 @@ class {{class-name}} extends {{base-controller}}
      * @throws InvalidTransformerException
      * @throws UpdateResourceFailedException
      */
-    public function update{{model}}(Update{{model}}Request $request): array
+    public function update{{model}}(Update{{model}}Request $request): JsonResponse
     {
         ${{entity}} = app(Update{{model}}Action::class)->run($request);
 
-        return $this->transform(${{entity}}, {{model}}Transformer::class);
+        return $this->updated($this->transform(${{entity}}, {{model}}Transformer::class),
+               alert: __('{{__module-name}}::{{__translation-name}}.updated'));
     }
 
     /**
@@ -87,6 +91,6 @@ class {{class-name}} extends {{base-controller}}
     {
         app(Delete{{model}}Action::class)->run($request);
 
-        return $this->noContent();
+        return $this->deleted(__('{{__module-name}}::{{__translation-name}}.deleted'));
     }
 }

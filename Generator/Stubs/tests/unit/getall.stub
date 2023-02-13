@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\Tests\Unit;
 
-use App\Containers\{{section-name}}\{{container-name}}\Models\{{model}};
-use App\Containers\{{section-name}}\{{container-name}}\Tasks\GetAll{{models}}Task;
-use App\Containers\{{section-name}}\{{container-name}}\Tests\TestCase;
+
+namespace {{module-name}}\{{section-name}}\{{container-name}}\Tests\Unit;
+
+use {{module-name}}\{{section-name}}\{{container-name}}\Models\{{model}};
+use {{module-name}}\{{section-name}}\{{container-name}}\Tasks\GetAll{{models}}Task;
+use {{module-name}}\{{section-name}}\{{container-name}}\Tests\TestCase;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 /**
