@@ -10,7 +10,7 @@ class SeedTestingDataCommand extends ConsoleCommand
     /**
      * The name and signature of the console command.
      */
-    protected $signature = "apiato:seed-test";
+    protected $signature = "mp:seed-test";
 
     /**
      * The console command description.

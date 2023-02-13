@@ -70,10 +70,12 @@ abstract class Repository extends PrettusRepository implements PrettusCacheable
             ];
         }
         else{
+ 
             $structure = [
                 $classFolder[1],
                 $classFolder[2],
                 $classFolder[3],
+                $classFolder[4],
             ];
         }
 

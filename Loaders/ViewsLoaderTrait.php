@@ -13,21 +13,32 @@ trait ViewsLoaderTrait
         $containerMailTemplatesDirectory = $containerPath . '/Mails/Templates/';
 
         $containerName = basename($containerPath);
-        $pathParts = explode(DIRECTORY_SEPARATOR, $containerPath);
+        $pathParts = explode(DIRECTORY_SEPARATOR , $containerPath);
         $sectionName = $pathParts[count($pathParts) - 2];
 
-        $this->loadViews($containerViewDirectory, $containerName, $sectionName);
-        $this->loadViews($containerMailTemplatesDirectory, $containerName, $sectionName);
+        $this->loadViews($containerViewDirectory , $containerName , $sectionName);
+        $this->loadViews($containerMailTemplatesDirectory , $containerName , $sectionName);
     }
 
-    private function loadViews($directory, $containerName, $sectionName = null): void
+    public function loadDocumentationViews($containerPath): void
     {
-        if (File::isDirectory($directory)) {
-            $this->loadViewsFrom($directory, $this->buildViewNamespace($sectionName, $containerName));
+        $containerViewDirectory = $containerPath . '/Documentation/UI/WEB/Views/';
+
+        $containerName = basename($containerPath);
+        $pathParts = explode(DIRECTORY_SEPARATOR , $containerPath);
+        $sectionName = $pathParts[count($pathParts) - 2];
+        $this->loadViews($containerViewDirectory , $containerName , $sectionName);
+
+    }
+
+    private function loadViews($directory , $containerName , $sectionName = null): void
+    {
+        if ( File::isDirectory($directory) ) {
+            $this->loadViewsFrom($directory , $this->buildViewNamespace($sectionName , $containerName));
         }
     }
 
-    private function buildViewNamespace(?string $sectionName, string $containerName): string
+    private function buildViewNamespace(?string $sectionName , string $containerName): string
     {
         return $sectionName ? (Str::camel($sectionName) . '@' . Str::camel($containerName)) : Str::camel($containerName);
     }
@@ -35,6 +46,6 @@ trait ViewsLoaderTrait
     public function loadViewsFromShip(): void
     {
         $shipMailTemplatesDirectory = base_path('app/MagicPort/Ship/Mails/Templates/');
-        $this->loadViews($shipMailTemplatesDirectory, 'ship'); // Ship views accessible via `ship::`.
+        $this->loadViews($shipMailTemplatesDirectory , 'ship'); // Ship views accessible via `ship::`.
     }
 }

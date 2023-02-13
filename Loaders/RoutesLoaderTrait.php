@@ -20,11 +20,19 @@ trait RoutesLoaderTrait
     public function runRoutesAutoLoader(): void
     {
         $containersPaths = Apiato::getAllContainerPaths();
-        //test
+        $modulesPaths = Apiato::getAllModulesPaths();
+
+        //Load Api and Web Routes
         foreach ($containersPaths as $containerPath) {
-            
+
             $this->loadApiContainerRoutes($containerPath);
             $this->loadWebContainerRoutes($containerPath);
+        }
+
+        //Load Documenations Routes
+        foreach ($modulesPaths as $containerPath) {
+
+            $this->loadDocumentationRoutes($containerPath);
         }
     }
 
@@ -35,11 +43,9 @@ trait RoutesLoaderTrait
     private function loadApiContainerRoutes(string $containerPath): void
     {
 
-        //"/home/akif/PhpstormProjects/MagicPortApi Projects/magicport-skeleton-try-better/app/Skeleton/AppSection/Welcome/UI/API/Routes" // vendor/magicport/core/Loaders/RoutesLoaderTrait.php:40
-        //"/home/akif/PhpstormProjects/MagicPortApi Projects/magicport-skeleton-try-better/app/Skeleton/Customer/Certificates/UI/API/Routes" // vendor/magicport/core/Loaders/RoutesLoaderTrait.php:40
-
         // Build the container api routes path
         $apiRoutesPath = $containerPath . '/UI/API/Routes';
+
         // Build the namespace from the path
         $controllerNamespace = $containerPath . '\\UI\API\Controllers';
         if (File::isDirectory($apiRoutesPath)) {
@@ -50,6 +56,27 @@ trait RoutesLoaderTrait
             });
             foreach ($files as $file) {
                 $this->loadApiRoute($file, $controllerNamespace);
+            }
+        }
+    }
+    private function loadDocumentationRoutes(string $containerPath): void
+    {
+
+
+        // Build the container api routes path
+        $docRoutesPath = $containerPath . '/Documentation/UI/WEB/Routes';
+
+        // Build the namespace from the path
+        $controllerNamespace = $containerPath . '\\Documentation\UI\WEB\Controllers';
+        if (File::isDirectory($docRoutesPath)) {
+
+            $files = File::allFiles($docRoutesPath);
+
+            $files = Arr::sort($files, function ($file) {
+                return $file->getFilename();
+            });
+            foreach ($files as $file) {
+                $this->loadWebRoute($file, $controllerNamespace);
             }
         }
     }

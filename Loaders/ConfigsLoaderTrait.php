@@ -30,7 +30,10 @@ trait ConfigsLoaderTrait
 
     public function loadConfigsFromContainers($containerPath): void
     {
+
         $containerConfigsDirectory = $containerPath . '/Configs';
+
         $this->loadConfigs($containerConfigsDirectory);
+
     }
 }

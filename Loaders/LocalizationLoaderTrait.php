@@ -17,16 +17,35 @@ trait LocalizationLoaderTrait
         $this->loadLocals($containerLocaleDirectory, $containerName, $sectionName);
     }
 
-    private function loadLocals($directory, $containerName, $sectionName = null): void
+    public function loadLocalsFromSection($containerPath): void
+    {
+        $containerLocaleDirectory = $containerPath . '/Languages';
+
+        $pathParts = explode(DIRECTORY_SEPARATOR, $containerPath);
+        $sectionName = $pathParts[count($pathParts) - 2];
+
+        $this->loadLocals($containerLocaleDirectory, sectionName: $sectionName);
+    }
+
+
+
+    private function loadLocals($directory, $containerName = null, $sectionName = null): void
     {
         if (File::isDirectory($directory)) {
+
             $this->loadTranslationsFrom($directory, $this->buildLocaleNamespace($sectionName, $containerName));
             $this->loadJsonTranslationsFrom($directory);
         }
     }
 
-    private function buildLocaleNamespace(?string $sectionName, string $containerName): string
+    private function buildLocaleNamespace(?string $sectionName, ?string $containerName): string
     {
+        // Get TRanslations from Section
+        if (!$containerName) {
+            return Str::camel($sectionName .'');
+        }
+
+
         return $sectionName ? (Str::camel($sectionName) . '@' . Str::camel($containerName)) : Str::camel($containerName);
     }
 

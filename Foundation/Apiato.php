@@ -9,11 +9,12 @@ class Apiato
     /**
      * The Apiato version.
      */
-    public const VERSION = '11.0.0';
+    public const VERSION = '1.0.0';
 
     private const SHIP_NAME = 'MagicPort/ship';
-    private const SKELETON_DIRECTORY_NAME = 'MagicPort/Skeleton';
+    private const SKELETON_DIRECTORY_NAME = 'MagicPort/Modules';
     private const CONTAINERS_DIRECTORY_NAME = 'Modules';
+
 
     public function getShipFoldersNames(): array
     {
@@ -52,6 +53,26 @@ class Apiato
     private function getSkelotonPath(string $sectionName): string
     {
         return app_path(self::SKELETON_DIRECTORY_NAME . DIRECTORY_SEPARATOR . $sectionName);
+    }
+
+    public function getModulePath(?string $containerPath = null, ?string $sectionPath = null)
+    {
+        $path = $containerPath ?? $sectionPath;
+        $path = explode(DIRECTORY_SEPARATOR, $path);
+
+        if($containerPath){
+            unset($path[count($path) - 1]);
+            unset($path[count($path) - 1]);
+        }
+        elseif ($sectionPath){
+            unset($path[count($path) - 1]);
+
+        }
+
+        return implode(DIRECTORY_SEPARATOR, $path);
+
+
+
     }
 
 
@@ -180,12 +201,41 @@ class Apiato
     {
 
         return [
-            ...File::directories(File::directories(app_path(self::SKELETON_DIRECTORY_NAME))),
-            ...File::directories(File::directories(app_path(self::CONTAINERS_DIRECTORY_NAME))),
+            ...glob(app_path(self::SKELETON_DIRECTORY_NAME) .
+                '/*/*Section/{!Languages,!Configs,*}',  GLOB_ONLYDIR | GLOB_BRACE),
+            ...glob(app_path(self::CONTAINERS_DIRECTORY_NAME) .
+                '/*/*Section/{!Languages,!Configs,*}', GLOB_ONLYDIR | GLOB_BRACE),
         ];
 
+    }
+
+    public function getAllModulesPaths(): array
+    {
+
+        return [
+            ...glob(app_path(self::SKELETON_DIRECTORY_NAME) .
+                '/*',  GLOB_ONLYDIR | GLOB_BRACE),
+            ...glob(app_path(self::CONTAINERS_DIRECTORY_NAME) .
+                '/*', GLOB_ONLYDIR | GLOB_BRACE),
+        ];
 
     }
+
+
+    public function getAllModuleSectionPaths(): array
+    {
+
+        return [
+            ...glob(app_path(self::SKELETON_DIRECTORY_NAME) .
+                '/*/*Section',  GLOB_ONLYDIR | GLOB_BRACE),
+            ...glob(app_path(self::CONTAINERS_DIRECTORY_NAME) .
+                '/*/*Section', GLOB_ONLYDIR | GLOB_BRACE),
+        ];
+
+    }
+
+//
+
 
     public function getSectionNames(): array
     {

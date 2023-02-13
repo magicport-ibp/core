@@ -36,6 +36,16 @@ trait AutoLoaderTrait
             $this->loadHelpersFromContainers($containerPath);
             $this->loadCommandsFromContainers($containerPath);
         }
+
+        foreach (Apiato::getAllModuleSectionPaths() as $moduleSectionPath) {
+
+            $this->loadLocalsFromSection($moduleSectionPath);
+        }
+
+        foreach (Apiato::getAllModulesPaths() as $moduleSectionPath) {
+
+            $this->loadDocumentationViews($moduleSectionPath);
+        }
     }
 
     public function runLoaderRegister(): void
@@ -43,9 +53,16 @@ trait AutoLoaderTrait
         $this->loadConfigsFromShip();
         $this->loadOnlyShipProviderFromShip();
 
+        foreach (Apiato::getAllModuleSectionPaths() as $moduleSectionPath) {
+
+            $this->loadConfigsFromContainers($moduleSectionPath);
+        }
+
         foreach (Apiato::getAllContainerPaths() as $containerPath) {
-            $this->loadConfigsFromContainers($containerPath);
+           $this->loadConfigsFromContainers($containerPath);
             $this->loadOnlyMainProvidersFromContainers($containerPath);
         }
+
+
     }
 }
