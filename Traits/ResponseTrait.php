@@ -1,33 +1,38 @@
 <?php
 
-namespace Apiato\Core\Traits;
+namespace App\MagicPort\Ship\Traits;
+
 
 use Apiato\Core\Abstracts\Transformers\Transformer;
 use Apiato\Core\Exceptions\InvalidTransformerException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Support\Collection;
-use ReflectionClass;
-use ReflectionException;
-use Request;
+use Illuminate\Support\Facades\Request;
 use Spatie\Fractal\Facades\Fractal;
 
 trait ResponseTrait
 {
+
+
     protected array $metaData = [];
 
     /**
      * @throws InvalidTransformerException
      */
     public function transform(
-        $data,
-        $transformerName = null,
-        array $includes = [],
-        array $meta = [],
-        $resourceKey = null
-    ): array {
+        $data ,
+        $transformerName = null ,
+        array $includes = [] ,
+        array $meta = [] ,
+        $resourceKey = null ,
+        $single = false
+    ): array
+    {
+
+
         // first, we need to create the transformer
-        if ($transformerName instanceof Transformer) {
+        if ( $transformerName instanceof Transformer ) {
             // check, if we have provided a respective TRANSFORMER class
             $transformer = $transformerName;
         } else {
@@ -36,72 +41,98 @@ trait ResponseTrait
         }
 
         // now, finally check, if the class is really a TRANSFORMER
-        if (!($transformer instanceof Transformer)) {
-            throw new InvalidTransformerException();
-        }
+//        if ( !($transformer instanceof Transformer) ) {
+//            throw new InvalidTransformerException();
+//        }
 
         // add specific meta information to the response message
         $this->metaData = [
-            'include' => $transformer->getAvailableIncludes(),
-            'custom' => $meta,
+            'include' => $transformer->getAvailableIncludes() ,
+            'custom'  => $meta ,
         ];
 
         // no resource key was set
-        if (!$resourceKey) {
+        if ( !$resourceKey ) {
             // get the resource key from the model
             $obj = null;
-            if ($data instanceof AbstractPaginator) {
+            if ( $data instanceof AbstractPaginator ) {
                 $obj = $data->getCollection()->first();
-            } elseif ($data instanceof Collection) {
+            } else if ( $data instanceof Collection ) {
                 $obj = $data->first();
             } else {
                 $obj = $data;
             }
 
-            // if we have an object, try to get its resourceKey
-            if ($obj) {
-                $resourceKey = $obj->getResourceKey();
-            }
+
+            $resourceKey = 'data';
+
         }
 
-        $fractal = Fractal::create($data, $transformer)->withResourceName($resourceKey)->addMeta($this->metaData);
+        $fractal = Fractal::create($data , $transformer)->withResourceName($resourceKey)->addMeta($this->metaData);
 
         // read includes passed via query params in url
         $requestIncludes = $this->parseRequestedIncludes();
 
         // merge the requested includes with the one added by the transform() method itself
-        $requestIncludes = array_unique(array_merge($includes, $requestIncludes));
+        $requestIncludes = array_unique(array_merge($includes , $requestIncludes));
 
         // and let fractal include everything
         $fractal->parseIncludes($requestIncludes);
 
-        // apply request filters if available in the request
-        if ($requestFilters = Request::get('filter')) {
-            $result = $this->filterResponse($fractal->toArray(), explode(';', $requestFilters));
-        } else {
-            $result = $fractal->toArray();
+        // Transform empty array to null
+        $fractalData = $fractal->toArray();
+
+
+        if ( Request::has('filter') && $requestFilters = Request::get('filter') ) {
+            $fractalData['data'] = $this->filterResponse($fractalData['data'] , explode(';' , $requestFilters));
         }
 
-        return $result;
+
+        if ( Request::has('exclude') && $requestFilters = Request::get('exclude') ) {
+            $fractalData['data'] = $this->filterResponseExclude($fractalData['data'] , explode(';' , $requestFilters));
+        }
+
+
+        if ( !blank($fractalData['data']) ) {
+            $fractalData['data'] = $this->transformNull($single ? $fractalData['data'][0] : $fractalData['data']);
+        }
+
+
+        $fractalData['status'] = true;
+
+
+        return $fractalData;
     }
 
     protected function parseRequestedIncludes(): array
     {
-        return explode(',', Request::get('include'));
+        return explode(',' , Request::get('include'));
     }
 
-    private function filterResponse(array $responseArray, array $filters): array
+    // transform to null when array is empty recursively
+    protected function transformNull($array)
     {
-        foreach ($responseArray as $k => $v) {
-            if (in_array($k, $filters, true)) {
+        foreach ( $array as $key => $value ) {
+            if ( is_array($value) ) {
+                $array[$key] = $this->transformNull($value);
+            }
+        }
+
+        return empty($array) ? null : $array;
+    }
+
+    private function filterResponse(array $responseArray , array $filters): array
+    {
+        foreach ( $responseArray as $k => $v ) {
+            if ( in_array($k , $filters , true) ) {
                 // we have found our element - so continue with the next one
                 continue;
             }
 
-            if (is_array($v)) {
+            if ( is_array($v) ) {
                 // it is an array - so go one step deeper
-                $v = $this->filterResponse($v, $filters);
-                if (empty($v)) {
+                $v = $this->filterResponse($v , $filters);
+                if ( empty($v) ) {
                     // it is an empty array - delete the key as well
                     unset($responseArray[$k]);
                 } else {
@@ -109,7 +140,35 @@ trait ResponseTrait
                 }
             } else {
                 // check if the array is not in our filter-list
-                if (!in_array($k, $filters)) {
+                if ( !in_array($k , $filters) ) {
+                    unset($responseArray[$k]);
+                }
+            }
+        }
+
+        return $responseArray;
+    }
+
+    private function filterResponseExclude(array $responseArray , array $filters): array
+    {
+        foreach ( $responseArray as $k => $v ) {
+            if ( in_array($k , $filters , true) ) {
+                // we have found our element - so continue with the next one
+                unset($responseArray[$k]);
+            }
+
+            if ( is_array($v) ) {
+                // it is an array - so go one step deeper
+                $v = $this->filterResponse($v , $filters);
+                if ( empty($v) ) {
+                    // it is an empty array - delete the key as well
+                    unset($responseArray[$k]);
+                } else {
+                    $responseArray[$k] = $v;
+                }
+            } else {
+                // check if the array is not in our filter-list
+                if ( in_array($k , $filters) ) {
                     unset($responseArray[$k]);
                 }
             }
@@ -125,40 +184,53 @@ trait ResponseTrait
         return $this;
     }
 
-    public function json($message, $status = 200, array $headers = [], $options = 0): JsonResponse
+    public function json($message , $status = 200 , array $headers = [] , $options = 0): JsonResponse
     {
-        return new JsonResponse($message, $status, $headers, $options);
+        return new JsonResponse($message , $status , $headers , $options);
     }
 
-    public function created($message = null, $status = 201, array $headers = [], $options = 0): JsonResponse
+    public function created($message = [] , $status = 201 , array $headers = [] , $options = 0 , $alert = null): JsonResponse
     {
-        return new JsonResponse($message, $status, $headers, $options);
+        $message = [
+            ...$message ,
+            'message' => $alert ?? 'Created Successfully!' ,
+        ];
+
+
+        return new JsonResponse($message , $status , $headers , $options);
     }
 
-    /**
-     * @throws ReflectionException
-     */
-    public function deleted($responseArray = null): JsonResponse
+
+    public function updated($message = [] , $status = 200 , array $headers = [] , $options = 0 , $alert = null): JsonResponse
     {
-        if (!$responseArray) {
-            return $this->accepted();
+        $message = [
+            ...$message ,
+            'message' => $alert ?? 'Updated Successfully!' ,
+        ];
+
+
+        return new JsonResponse($message , $status , $headers , $options);
+    }
+
+    public function deleted($alert = null): JsonResponse
+    {
+
+        return $this->accepted($alert ?? "Deleted Successfully.");
+    }
+
+    public function accepted($message = null , $status = 202 , array $headers = [] , $options = 0): JsonResponse
+    {
+        $data = [ 'status' => true , ];
+        if ( !is_null($message) ) {
+            $data['message'] = $message;
         }
 
-        $id = $responseArray->getHashedKey();
-        $className = (new ReflectionClass($responseArray))->getShortName();
 
-        return $this->accepted([
-            'message' => "$className ($id) Deleted Successfully.",
-        ]);
-    }
-
-    public function accepted($message = null, $status = 202, array $headers = [], $options = 0): JsonResponse
-    {
-        return new JsonResponse($message, $status, $headers, $options);
+        return new JsonResponse($data , $status , $headers , $options);
     }
 
     public function noContent($status = 204): JsonResponse
     {
-        return new JsonResponse(null, $status);
+        return new JsonResponse(null , $status);
     }
 }
