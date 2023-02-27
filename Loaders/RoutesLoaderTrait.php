@@ -106,7 +106,7 @@ trait RoutesLoaderTrait
     public function getRouteGroup($endpointFileOrPrefixString, $controllerNamespace = null): array
     {
         return [
-            'namespace' => $controllerNamespace,
+//            'namespace' => $controllerNamespace,
             'middleware' => $this->getMiddlewares(),
             'domain' => $this->getApiUrl(),
             // If $endpointFileOrPrefixString is a file then get the version name from the file name, else if string use that string as prefix
