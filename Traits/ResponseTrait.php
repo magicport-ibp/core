@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MagicPort\Ship\Traits;
+namespace Apiato\Core\Traits;
 
 
 use Apiato\Core\Abstracts\Transformers\Transformer;
