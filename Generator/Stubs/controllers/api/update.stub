@@ -12,8 +12,6 @@ use {{module-name}}\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Tr
 use App\MagicPort\Ship\Exceptions\NotFoundException;
 use App\MagicPort\Ship\Exceptions\UpdateResourceFailedException;
 use App\MagicPort\Ship\Parents\Controllers\{{base-controller}};
-use Illuminate\Http\JsonResponse;
-
 
 class {{class-name}} extends {{base-controller}}
 {
@@ -25,11 +23,11 @@ class {{class-name}} extends {{base-controller}}
      * @throws IncorrectIdException
      * @throws NotFoundException
      */
-    public function update{{model}}(Update{{model}}Request $request): JsonResponse
+    public function update{{model}}(Update{{model}}Request $request): array
     {
         ${{entity}} = app(Update{{model}}Action::class)->run($request);
 
         return $this->updated($this->transform(${{entity}}, {{model}}Transformer::class),
-               alert: __('{{__module-name}}::{{__translation-name}}.updated'));
+               alert: __('{{__module-name}}@{{__section-name}}::{{__translation-name}}.updated'));
     }
 }

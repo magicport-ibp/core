@@ -18,8 +18,8 @@ class ControllerGenerator extends GeneratorCommand implements ComponentsGenerato
      * @var  array
      */
     public array $inputs = [
-        ['ui', null, InputOption::VALUE_OPTIONAL, 'The user-interface to generate the Controller for.'],
-        ['stub', null, InputOption::VALUE_OPTIONAL, 'The stub file to load for this generator.'],
+        [ 'ui' , null , InputOption::VALUE_OPTIONAL , 'The user-interface to generate the Controller for.' ] ,
+        [ 'stub' , null , InputOption::VALUE_OPTIONAL , 'The stub file to load for this generator.' ] ,
 
     ];
     /**
@@ -53,13 +53,13 @@ class ControllerGenerator extends GeneratorCommand implements ComponentsGenerato
 
     public function getUserInputs(): ?array
     {
-        $ui = Str::lower($this->checkParameterOrChoice('ui', 'Select the UI for the controller', ['API', 'WEB'], 0));
+        $ui = Str::lower($this->checkParameterOrChoice('ui' , 'Select the UI for the controller' , [ 'API' , 'WEB' ] , 0));
 
         $stub = Str::lower(
             $this->checkParameterOrChoice(
-                'stub',
-                'Select the Stub you want to load',
-                ['Generic', 'CRUD', 'Create', 'Delete', 'Find', 'GetAll', 'Update'],
+                'stub' ,
+                'Select the Stub you want to load' ,
+                [ 'Generic' , 'CRUD' , 'Create' , 'Delete' , 'Find' , 'GetAll' , 'Update' ] ,
                 0
             )
         );
@@ -78,36 +78,36 @@ class ControllerGenerator extends GeneratorCommand implements ComponentsGenerato
 
         return [
             'path-parameters' => [
-                'module-name' => $this->moduleName,
-                'section-name' => $this->sectionName,
-                'container-name' => $this->containerName,
-                'user-interface' => Str::upper($ui),
-            ],
+                'module-name'    => $this->moduleName ,
+                'section-name'   => $this->sectionName ,
+                'container-name' => $this->containerName ,
+                'user-interface' => Str::upper($ui) ,
+            ] ,
             'stub-parameters' => [
-                '_module-name' => Str::lower($this->moduleName),
-                '__module-name' => Str::camel($this->moduleName),
-                'module-name' => $this->moduleName,
-                '_section-name' => Str::lower($this->sectionName),
-                '__section-name' => Str::camel($this->sectionName),
-                'section-name' => $this->sectionName,
-                '_container-name' => Str::lower($this->containerName),
-                '__container-name' => Str::camel($this->containerName),
-                'container-name' => $this->containerName,
-                '__translation-name' => Str::camel($this->moduleName) . '-' . Str::camel($this->containerName),
-                'class-name' => $this->fileName,
-                'user-interface' => Str::upper($ui),
-                'base-controller' => $basecontroller,
-                'method-name' => Str::camel($this->option('file-name')),
-                'file-name' => $this->option('file-name'),
+                '_module-name'       => Str::lower($this->moduleName) ,
+                '__module-name'      => Str::camel($this->moduleName) ,
+                'module-name'        => $this->moduleName ,
+                '_section-name'      => Str::lower($this->sectionName) ,
+                '__section-name'     => Str::camel($this->sectionName) ,
+                'section-name'       => $this->sectionName ,
+                '_container-name'    => Str::lower($this->containerName) ,
+                '__container-name'   => Str::camel($this->containerName) ,
+                'container-name'     => $this->containerName ,
+                '__translation-name' => Str::camel($this->containerName) ,
+                'class-name'         => $this->fileName ,
+                'user-interface'     => Str::upper($ui) ,
+                'base-controller'    => $basecontroller ,
+                'method-name'        => Str::camel($this->option('file-name')) ,
+                'file-name'          => $this->option('file-name') ,
 
-                'model' => $model,
-                'models' => $models,
-                'entity' => $entity,
-                'entities' => $entities,
-            ],
+                'model'    => $model ,
+                'models'   => $models ,
+                'entity'   => $entity ,
+                'entities' => $entities ,
+            ] ,
             'file-parameters' => [
-                'file-name' => $this->fileName,
-            ],
+                'file-name' => $this->fileName ,
+            ] ,
         ];
     }
 

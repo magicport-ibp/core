@@ -23,7 +23,7 @@ class {{class-name}} extends {{base-controller}}
     {
         app(Delete{{model}}Action::class)->run($request);
 
-        return $this->deleted(__('{{__module-name}}::{{__translation-name}}.deleted'));
+        return $this->deleted(__('{{__module-name}}@{{__section-name}}::{{__translation-name}}.deleted'));
 
     }
 }

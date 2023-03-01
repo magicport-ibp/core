@@ -27,6 +27,6 @@ class {{class-name}} extends {{base-controller}}
         ${{entity}} = app(Create{{model}}Action::class)->run($request);
 
         return $this->created($this->transform(${{entity}}, {{model}}Transformer::class),
-               alert: __('{{__module-name}}::{{__translation-name}}.created'));
+               alert: __('{{__module-name}}@{{__section-name}}::{{__translation-name}}.created'));
     }
 }

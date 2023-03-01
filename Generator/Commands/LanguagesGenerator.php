@@ -49,23 +49,23 @@ class LanguagesGenerator extends GeneratorCommand implements ComponentsGenerator
     {
         return [
             'path-parameters' => [
-                'module-name' => $this->moduleName,
-                'section-name' => $this->sectionName,
-                'container-name' => $this->containerName,
-            ],
+                'module-name'    => $this->moduleName ,
+                'section-name'   => $this->sectionName ,
+                'container-name' => $this->containerName ,
+            ] ,
             'stub-parameters' => [
-                '_module-name' => Str::camel($this->moduleName),
-                'module-name' => $this->moduleName,
-                '_section-name' => Str::lower($this->sectionName),
-                'section-name' => $this->sectionName,
-                '_container-name' => Str::camel($this->containerName),
-                'container-name' => $this->containerName,
-                'class-name' => $this->fileName,
-                'file-name' => $this->getDefaultFileName(),
-            ],
+                '_module-name'    => Str::camel($this->moduleName) ,
+                'module-name'     => $this->moduleName ,
+                '_section-name'   => Str::camel($this->sectionName) ,
+                'section-name'    => $this->sectionName ,
+                '_container-name' => Str::camel($this->containerName) ,
+                'container-name'  => $this->containerName ,
+                'class-name'      => $this->fileName ,
+                'file-name'       => $this->getDefaultFileName() ,
+            ] ,
             'file-parameters' => [
-                'file-name' => $this->getDefaultFileName(),
-            ],
+                'file-name' => $this->getDefaultFileName() ,
+            ] ,
         ];
     }
 
@@ -74,6 +74,6 @@ class LanguagesGenerator extends GeneratorCommand implements ComponentsGenerator
      */
     public function getDefaultFileName(): string
     {
-        return Str::camel($this->moduleName) . '-' . Str::camel($this->containerName);
+        return Str::camel($this->containerName);
     }
 }

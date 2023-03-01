@@ -4,8 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | {{module-name}} Module {{container-name}} Container
-    | For call  use: __('{{_module-name}}::{{file-name}}.key');
+    | For call use: __('{{_module-name}}@{{_section-name}}::{{file-name}}.key');
     |--------------------------------------------------------------------------
     |
     */
